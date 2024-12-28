@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -15,8 +16,11 @@ public class Candidate extends User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "fullname")
-    private String fullName;
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "lastname")
+    private String lastname;
 
     @Column(name = "jobTitle")
     private String jobTitle;
@@ -33,6 +37,15 @@ public class Candidate extends User {
     @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
     private List<JobAlert> alerts;
 
+    @ManyToMany
+    @JoinTable(
+            name = "candidate_saved_jobs",
+            joinColumns = @JoinColumn(name = "candidate_id"),
+            inverseJoinColumns = @JoinColumn(name = "job_id")
+    )
+    private List<Job> savedJobs = new ArrayList<>();
+
+
     public Long getId() {
         return id;
     }
@@ -41,12 +54,20 @@ public class Candidate extends User {
         this.id = id;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getJobTitle() {
@@ -87,5 +108,13 @@ public class Candidate extends User {
 
     public void setAlerts(List<JobAlert> alerts) {
         this.alerts = alerts;
+    }
+
+    public List<Job> getSavedJobs() {
+        return savedJobs;
+    }
+
+    public void setSavedJobs(List<Job> savedJobs) {
+        this.savedJobs = savedJobs;
     }
 }

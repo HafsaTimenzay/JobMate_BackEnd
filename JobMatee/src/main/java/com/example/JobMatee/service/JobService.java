@@ -1,5 +1,6 @@
 package com.example.JobMatee.service;
 
+import com.example.JobMatee.model.Candidate;
 import com.example.JobMatee.model.Job;
 import com.example.JobMatee.model.JobApplication;
 import com.example.JobMatee.repository.JobApplicationRepository;
@@ -33,15 +34,14 @@ public class JobService {
                 .orElseThrow(() -> new RuntimeException("Job not found!"));
     }
 
-    public void applyToJob(Long jobId, Long candidateId, String resumeUrl, String coverLetter) {
+    public void applyToJob(Long jobId, Candidate candidateId, String resumeUrl, String coverLetter) {
         Job job = jobRepository.findById(jobId)
                 .orElseThrow(() -> new RuntimeException("Job not found!"));
 
         JobApplication application = new JobApplication();
         application.setJob(job);
-//        application.setCandidate(candidateId);
+        application.setCandidate(candidateId);
         application.setResumePath(resumeUrl);
-        application.setCoverLetter(coverLetter);
         application.setAppliedDate(LocalDate.now());
 
         jobApplicationRepository.save(application);

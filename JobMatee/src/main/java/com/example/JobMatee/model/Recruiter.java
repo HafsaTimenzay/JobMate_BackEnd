@@ -19,7 +19,8 @@ public class Recruiter extends User {
     @Column(name = "password")
     private String password;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
+    @PrimaryKeyJoinColumn
     private CompanyInfo companyInfo;
 
     @OneToOne(cascade = CascadeType.ALL)

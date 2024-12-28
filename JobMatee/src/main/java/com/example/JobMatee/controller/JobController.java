@@ -1,5 +1,6 @@
 package com.example.JobMatee.controller;
 
+import com.example.JobMatee.model.Candidate;
 import com.example.JobMatee.model.Job;
 import com.example.JobMatee.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,7 @@ public class JobController {
     @PostMapping("/{jobId}/apply")
     public ResponseEntity<String> applyToJob(
             @PathVariable Long jobId,
-            @RequestParam Long candidateId,
+            @RequestParam Candidate candidateId,
             @RequestParam String resumeUrl,
             @RequestParam String coverLetter) {
         jobService.applyToJob(jobId, candidateId, resumeUrl, coverLetter);

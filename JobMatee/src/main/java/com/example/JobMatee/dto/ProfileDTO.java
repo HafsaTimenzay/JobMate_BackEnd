@@ -7,33 +7,30 @@ import java.time.LocalDate;
 
 @Data
 public class ProfileDTO {
-    private String fullName;
+    private String firstName;
+    private String lastName;
     private String jobTitle;
     private String personalWebsite;
     private String resumeUrl;
-    private String nationality;
+    private String city;
     private String dateOfBirth;
     private String gender;
     private String educationLevel;
     private Integer experienceYears;
-    private String biography;
     private String phoneNumber;
-    private String location;
 
     public CandidateSettings toEntity() {
         CandidateSettings profileSettings = new CandidateSettings();
-        profileSettings.setFullName(fullName);
-        profileSettings.setJobTitle(jobTitle);
-        profileSettings.setPersonalWebsite(personalWebsite);
+        profileSettings.setFirstName(firstName);
+        profileSettings.setPreferredRole(jobTitle);
+        profileSettings.setPersonalWebsiteUrl(personalWebsite);
         profileSettings.setResumePath(resumeUrl);
-        profileSettings.setNationality(nationality);
+        profileSettings.setCity(city);
         profileSettings.setDateOfBirth(LocalDate.parse(dateOfBirth));
         profileSettings.setGender(gender);
         profileSettings.setEducationLevel(educationLevel);
         profileSettings.setExperienceYears(experienceYears);
-        profileSettings.setBiography(biography);
         profileSettings.setPhoneNumber(phoneNumber);
-        profileSettings.setLocation(location);
         return profileSettings;
     }
 }

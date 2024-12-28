@@ -30,8 +30,11 @@ public class User {
     @Column(name = "verified", nullable = false)
     private boolean verified; // True if email is verified
 
-    @Column(name = "fullname", nullable = false)
-    private String fullName;
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "lastname")
+    private String lastname;
 
     @Column(name = "verification_token")
     private String verificationToken;
@@ -42,6 +45,22 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public String getEmail() {
@@ -84,13 +103,6 @@ public class User {
         this.verified = verified;
     }
 
-    public String getFullName() {
-        return fullName;
-    }
-
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
-    }
 
     public String getVerificationToken() {
         return verificationToken;

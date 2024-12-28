@@ -8,66 +8,66 @@ import java.time.LocalDate;
 @Entity
 public class CandidateSettings {
 
-    // Getters and setters
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "candidate_id")
+    @JoinColumn(name = "candidate_id", nullable = false)
     private Candidate candidate; // Candidate linked to these settings
 
-    // Personal Info
-    @Column(name = "profilePicture")
+    // Profile Picture
+    @Column(name = "profile_picture")
     private String profilePicture; // Path to the uploaded profile picture
 
-    @Column(name = "fullName")
-    private String fullName;
+    // Personal Info
+    @Column(name = "first_name", nullable = false)
+    private String firstName;
 
-    @Column(name = "jobTitle")
-    private String jobTitle;
+    @Column(name = "last_name", nullable = false)
+    private String lastName;
 
-    @Column(name = "personalWebsite")
-    private String personalWebsite;
-
-    @Column(name = "resumePath")
-    private String resumePath;
-
-    @Column(name = "location")
-    private String location;
-
-    // Profile
-    @Column(name = "nationality")
-    private String nationality;
-
-    @Column(name = "dateOfBirth")
+    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
 
     @Column(name = "gender")
     private String gender;
 
-    @Column(name = "educationLevel")
-    private String educationLevel;
+    @Column(name = "city")
+    private String city;
 
-    @Column(name = "experienceYears")
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    // Resume
+    @Column(name = "resume_path")
+    private String resumePath; // Path to the uploaded CV
+
+    // Professional Details
+    @Column(name = "experience_years")
     private Integer experienceYears; // Number of years of experience
 
+    @Column(name = "education_level")
+    private String educationLevel;
 
-    @Column(name = "biography", length = 2000)
-    private String biography;
+    @Column(name = "preferred_role")
+    private String preferredRole; // Candidate's preferred job role
 
     // Social Links
-    private String linkedIn;
-    private String github;
-    private String twitter;
+    @Column(name = "linkedin_url")
+    private String linkedinUrl;
 
-    // Account Settings
-    private String phoneNumber;
-    private String preferredJobLocation;
-    private String preferredJobRole;
-    private boolean profilePrivate; // If the profile is private
-    private boolean allowJobAlerts; // If the candidate wants job alerts
+    @Column(name = "personal_website_url")
+    private String personalWebsiteUrl;
 
+    // Account Info
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
+    @Column(name = "password", nullable = false)
+    private String password;
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -84,6 +84,22 @@ public class CandidateSettings {
         this.candidate = candidate;
     }
 
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     public String getProfilePicture() {
         return profilePicture;
     }
@@ -92,44 +108,20 @@ public class CandidateSettings {
         this.profilePicture = profilePicture;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getJobTitle() {
-        return jobTitle;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setJobTitle(String jobTitle) {
-        this.jobTitle = jobTitle;
-    }
-
-    public String getPersonalWebsite() {
-        return personalWebsite;
-    }
-
-    public void setPersonalWebsite(String personalWebsite) {
-        this.personalWebsite = personalWebsite;
-    }
-
-    public String getResumePath() {
-        return resumePath;
-    }
-
-    public void setResumePath(String resumePath) {
-        this.resumePath = resumePath;
-    }
-
-    public String getNationality() {
-        return nationality;
-    }
-
-    public void setNationality(String nationality) {
-        this.nationality = nationality;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public LocalDate getDateOfBirth() {
@@ -148,12 +140,12 @@ public class CandidateSettings {
         this.gender = gender;
     }
 
-    public String getEducationLevel() {
-        return educationLevel;
+    public String getResumePath() {
+        return resumePath;
     }
 
-    public void setEducationLevel(String educationLevel) {
-        this.educationLevel = educationLevel;
+    public void setResumePath(String resumePath) {
+        this.resumePath = resumePath;
     }
 
     public Integer getExperienceYears() {
@@ -164,84 +156,51 @@ public class CandidateSettings {
         this.experienceYears = experienceYears;
     }
 
-    public String getBiography() {
-        return biography;
+    public String getEducationLevel() {
+        return educationLevel;
     }
 
-    public void setBiography(String biography) {
-        this.biography = biography;
+    public void setEducationLevel(String educationLevel) {
+        this.educationLevel = educationLevel;
     }
 
-    public String getLinkedIn() {
-        return linkedIn;
+    public String getPreferredRole() {
+        return preferredRole;
     }
 
-    public void setLinkedIn(String linkedIn) {
-        this.linkedIn = linkedIn;
+    public void setPreferredRole(String preferredRole) {
+        this.preferredRole = preferredRole;
     }
 
-    public String getGithub() {
-        return github;
+    public String getLinkedinUrl() {
+        return linkedinUrl;
     }
 
-    public void setGithub(String github) {
-        this.github = github;
+    public void setLinkedinUrl(String linkedinUrl) {
+        this.linkedinUrl = linkedinUrl;
     }
 
-    public String getTwitter() {
-        return twitter;
+    public String getPersonalWebsiteUrl() {
+        return personalWebsiteUrl;
     }
 
-    public void setTwitter(String twitter) {
-        this.twitter = twitter;
+    public void setPersonalWebsiteUrl(String personalWebsiteUrl) {
+        this.personalWebsiteUrl = personalWebsiteUrl;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getEmail() {
+        return email;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getPreferredJobLocation() {
-        return preferredJobLocation;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPreferredJobLocation(String preferredJobLocation) {
-        this.preferredJobLocation = preferredJobLocation;
-    }
-
-    public String getPreferredJobRole() {
-        return preferredJobRole;
-    }
-
-    public void setPreferredJobRole(String preferredJobRole) {
-        this.preferredJobRole = preferredJobRole;
-    }
-
-    public boolean isProfilePrivate() {
-        return profilePrivate;
-    }
-
-    public void setProfilePrivate(boolean profilePrivate) {
-        this.profilePrivate = profilePrivate;
-    }
-
-    public boolean isAllowJobAlerts() {
-        return allowJobAlerts;
-    }
-
-    public void setAllowJobAlerts(boolean allowJobAlerts) {
-        this.allowJobAlerts = allowJobAlerts;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
-

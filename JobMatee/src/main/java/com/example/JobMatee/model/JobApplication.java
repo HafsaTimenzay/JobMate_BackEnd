@@ -20,8 +20,8 @@ public class JobApplication {
     @Column(name = "resume_path")
     private String resumePath;
 
-    @Column(name = "cover_letter")
-    private String coverLetter;
+    @Column(name = "additional_notes", length = 1000)
+    private String additionalNotes;
 
     @Column(name = "status", nullable = false)
     private String status = "active"; // Default to "active"
@@ -45,6 +45,14 @@ public class JobApplication {
         this.candidate = candidate;
     }
 
+    public String getAdditionalNotes() {
+        return additionalNotes;
+    }
+
+    public void setAdditionalNotes(String additionalNotes) {
+        this.additionalNotes = additionalNotes;
+    }
+
     public Job getJob() {
         return job;
     }
@@ -61,13 +69,7 @@ public class JobApplication {
         this.resumePath = resumePath;
     }
 
-    public String getCoverLetter() {
-        return coverLetter;
-    }
 
-    public void setCoverLetter(String coverLetter) {
-        this.coverLetter = coverLetter;
-    }
 
     public String getStatus() {
         return status;

@@ -11,21 +11,52 @@ public class Job {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "recruiter_id")
+    @JoinColumn(name = "recruiter_id", nullable = false)
     private Recruiter recruiter;
 
+    @Column(nullable = false)
     private String title; // Job title
-    private String company; // Company name
-    private String location; // Job location (city, remote, etc.)
-    private String type; // e.g., "full-time", "part-time"
-    private String category; // Job category
-    private Double salary; // Salary range
 
-    @Column(length = 2000)
+    @Column(nullable = false)
+    private Double salary;
+
+    @Column(nullable = false)
+    private String company; // Company name
+
+    @Column(nullable = false)
+    private String location; // Job location (city, remote, etc.)
+
+    @Column(nullable = false)
+    private String type; // e.g., "full-time", "part-time"
+
+    private String category; // Job category (optional, can be null)
+
+    @Column(nullable = false)
+    private Double minSalary; // Minimum salary range
+
+    @Column(nullable = false)
+    private Double maxSalary; // Maximum salary range
+
+    @Column(length = 2000, nullable = false)
     private String description; // Detailed job description
 
+    @Column(nullable = false)
     private LocalDate postedDate; // Date the job was posted
+
+    @Column(nullable = false)
+    private LocalDate expirationDate; // Date the job expires
+
+    @Column(nullable = false)
     private boolean remote; // Indicates if the job is remote
+
+    @Column(length = 1000)
+    private String requirements; // Job requirements (e.g., skills, experience)
+
+    @Column(length = 1000)
+    private String benefits; // Benefits offered (e.g., health insurance, flexible hours)
+
+    private String companyWebsite; // Link to the company website
+    private String linkedInUrl; // Link to the LinkedIn job posting
 
     // Getters and setters
     public Long getId() {
@@ -34,6 +65,62 @@ public class Job {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Double getMinSalary() {
+        return minSalary;
+    }
+
+    public void setMinSalary(Double minSalary) {
+        this.minSalary = minSalary;
+    }
+
+    public Double getMaxSalary() {
+        return maxSalary;
+    }
+
+    public void setMaxSalary(Double maxSalary) {
+        this.maxSalary = maxSalary;
+    }
+
+    public LocalDate getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public String getRequirements() {
+        return requirements;
+    }
+
+    public void setRequirements(String requirements) {
+        this.requirements = requirements;
+    }
+
+    public String getBenefits() {
+        return benefits;
+    }
+
+    public void setBenefits(String benefits) {
+        this.benefits = benefits;
+    }
+
+    public String getCompanyWebsite() {
+        return companyWebsite;
+    }
+
+    public void setCompanyWebsite(String companyWebsite) {
+        this.companyWebsite = companyWebsite;
+    }
+
+    public String getLinkedInUrl() {
+        return linkedInUrl;
+    }
+
+    public void setLinkedInUrl(String linkedInUrl) {
+        this.linkedInUrl = linkedInUrl;
     }
 
     public String getTitle() {
@@ -75,15 +162,6 @@ public class Job {
     public void setCategory(String category) {
         this.category = category;
     }
-
-    public Double getSalary() {
-        return salary;
-    }
-
-    public void setSalary(Double salary) {
-        this.salary = salary;
-    }
-
     public String getDescription() {
         return description;
     }
