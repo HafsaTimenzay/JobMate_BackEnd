@@ -34,11 +34,6 @@ public class RecruiterController {
         return ResponseEntity.ok("Contact information updated successfully");
     }
 
-    @PutMapping("/{id}/social-media")
-    public ResponseEntity<String> updateSocialMedia(@PathVariable Long id, @RequestBody SocialMedia socialMedia) {
-        recruiterService.updateSocialMedia(id, socialMedia);
-        return ResponseEntity.ok("Social media updated successfully");
-    }
 
     @GetMapping("/{id}/jobs")
     public ResponseEntity<List<JobRec>> getJobsByRecruiter(@PathVariable Long id) {

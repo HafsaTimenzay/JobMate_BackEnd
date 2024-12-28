@@ -37,12 +37,6 @@ public class RecruiterService {
         recruiterRepository.save(recruiter);
     }
 
-    public void updateSocialMedia(Long recruiterId, SocialMedia socialMedia) {
-        Recruiter recruiter = getRecruiterById(recruiterId);
-        recruiter.setSocialMedia(socialMedia);
-        recruiterRepository.save(recruiter);
-    }
-
     public List<JobRec> getJobsByRecruiter(Long recruiterId) {
         return jobRepository.findByRecruiterId(recruiterId);
     }

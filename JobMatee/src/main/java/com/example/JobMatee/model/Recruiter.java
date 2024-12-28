@@ -10,8 +10,11 @@ public class Recruiter extends User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "fullName")
-    private String fullName;
+    @Column(name = "firstname")
+    private String firstname;
+
+    @Column(name = "lastname")
+    private String lastname;
 
     @Column(name = "email")
     private String email;
@@ -26,21 +29,30 @@ public class Recruiter extends User {
     @OneToOne(cascade = CascadeType.ALL)
     private ContactInfo contactInfo;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private SocialMedia socialMedia;
-
     @OneToMany(mappedBy = "recruiter", cascade = CascadeType.ALL)
     private List<Job> jobs;
 
     @OneToMany(mappedBy = "recruiter", cascade = CascadeType.ALL)
     private List<SavedCandidate> savedCandidates;
 
-    public String getFullName() {
-        return fullName;
+    @Override
+    public String getFirstname() {
+        return firstname;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    @Override
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    @Override
+    public String getLastname() {
+        return lastname;
+    }
+
+    @Override
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 
     public Long getId() {
@@ -81,14 +93,6 @@ public class Recruiter extends User {
 
     public void setContactInfo(ContactInfo contactInfo) {
         this.contactInfo = contactInfo;
-    }
-
-    public SocialMedia getSocialMedia() {
-        return socialMedia;
-    }
-
-    public void setSocialMedia(SocialMedia socialMedia) {
-        this.socialMedia = socialMedia;
     }
 
     public List<Job> getJobs() {

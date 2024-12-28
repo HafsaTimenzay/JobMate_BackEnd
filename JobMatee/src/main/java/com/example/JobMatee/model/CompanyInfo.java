@@ -12,7 +12,6 @@ public class CompanyInfo {
     @OneToOne(mappedBy = "companyInfo")
     private Recruiter recruiter;
 
-    private String logoUrl;  // Path to the uploaded logo
     private String name;
     private String description;
     private String companyType;
@@ -21,9 +20,7 @@ public class CompanyInfo {
     private int yearEstablished;
     private String website;
 
-    public String getLogoUrl() {
-        return logoUrl;
-    }
+
 
     public String getName() {
         return name;

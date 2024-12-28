@@ -22,6 +22,7 @@ public class ProfileDTO {
     public CandidateSettings toEntity() {
         CandidateSettings profileSettings = new CandidateSettings();
         profileSettings.setFirstName(firstName);
+        profileSettings.setLastName(lastName);
         profileSettings.setPreferredRole(jobTitle);
         profileSettings.setPersonalWebsiteUrl(personalWebsite);
         profileSettings.setResumePath(resumeUrl);

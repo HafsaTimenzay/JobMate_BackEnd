@@ -12,10 +12,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/jobs")
 public class JobController {
-
     @Autowired
     private JobService jobService;
-
     /**
      * Search and filter jobs based on criteria.
      */
@@ -31,7 +29,6 @@ public class JobController {
         List<Job> jobs = jobService.searchAndFilterJobs(keyword, location, category, type, minSalary, maxSalary, remote);
         return ResponseEntity.ok(jobs);
     }
-
     /**
      * Get a job by its ID.
      */
@@ -40,7 +37,6 @@ public class JobController {
         Job job = jobService.getJobById(jobId);
         return ResponseEntity.ok(job);
     }
-
     /**
      * Apply to a job by uploading resume and cover letter.
      */
