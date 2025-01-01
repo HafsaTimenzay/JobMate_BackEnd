@@ -16,7 +16,7 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable()) // Disable CSRF using the new approach
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/signup", "/login", "/verify", "/reset-password").permitAll()
+                        .requestMatchers("/signup","/api/users/signup", "/login", "/verify", "/reset-password").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form

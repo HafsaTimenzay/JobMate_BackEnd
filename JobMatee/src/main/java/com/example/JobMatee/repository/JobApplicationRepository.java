@@ -9,4 +9,6 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication, 
     List<JobApplication> findTop5ByCandidateIdOrderByAppliedDateDesc(Long candidateId);
 
     List<JobApplication> findByCandidateId(Long candidateId);
+
+    List<JobApplication> findByJobId(Long jobId);
 }

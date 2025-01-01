@@ -22,16 +22,38 @@ public class Recruiter extends User {
     @Column(name = "password")
     private String password;
 
-    @OneToOne
-    @PrimaryKeyJoinColumn
-    private CompanyInfo companyInfo;
+    @Column(name = "companyLogo")
+    private String companyLogo; // Path to logo
 
-    @OneToOne(cascade = CascadeType.ALL)
-    private ContactInfo contactInfo;
+    @Column(name = "companyName")
+    private String companyName;
 
+    @Column(name = "companyDescription", length = 2000)
+    private String companyDescription;
+
+    @Column(name = "organisationType")
+    private String organisationType;
+
+    @Column(name = "industryType")
+    private String industryType;
+
+    @Column(name = "teamSize")
+    private String teamSize;
+
+    @Column(name = "yearOfEstablishment")
+    private Integer yearOfEstablishment;
+
+    @Column(name = "websiteUrl")
+    private String websiteUrl;
+
+    @Column(name = "linkedinUrl")
+    private String linkedinUrl;
+
+    // One-to-Many relationship with Job
     @OneToMany(mappedBy = "recruiter", cascade = CascadeType.ALL)
-    private List<Job> jobs;
+    private List<JobRec> jobs;
 
+    // One-to-Many relationship with SavedCandidate
     @OneToMany(mappedBy = "recruiter", cascade = CascadeType.ALL)
     private List<SavedCandidate> savedCandidates;
 
@@ -79,30 +101,6 @@ public class Recruiter extends User {
         this.password = password;
     }
 
-    public CompanyInfo getCompanyInfo() {
-        return companyInfo;
-    }
-
-    public void setCompanyInfo(CompanyInfo companyInfo) {
-        this.companyInfo = companyInfo;
-    }
-
-    public ContactInfo getContactInfo() {
-        return contactInfo;
-    }
-
-    public void setContactInfo(ContactInfo contactInfo) {
-        this.contactInfo = contactInfo;
-    }
-
-    public List<Job> getJobs() {
-        return jobs;
-    }
-
-    public void setJobs(List<Job> jobs) {
-        this.jobs = jobs;
-    }
-
     public List<SavedCandidate> getSavedCandidates() {
         return savedCandidates;
     }
@@ -111,6 +109,85 @@ public class Recruiter extends User {
         this.savedCandidates = savedCandidates;
     }
 
+    public String getCompanyLogo() {
+        return companyLogo;
+    }
+
+    public void setCompanyLogo(String companyLogo) {
+        this.companyLogo = companyLogo;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getCompanyDescription() {
+        return companyDescription;
+    }
+
+    public void setCompanyDescription(String companyDescription) {
+        this.companyDescription = companyDescription;
+    }
+
+    public String getOrganisationType() {
+        return organisationType;
+    }
+
+    public void setOrganisationType(String organisationType) {
+        this.organisationType = organisationType;
+    }
+
+    public String getIndustryType() {
+        return industryType;
+    }
+
+    public void setIndustryType(String industryType) {
+        this.industryType = industryType;
+    }
+
+    public String getTeamSize() {
+        return teamSize;
+    }
+
+    public void setTeamSize(String teamSize) {
+        this.teamSize = teamSize;
+    }
+
+    public Integer getYearOfEstablishment() {
+        return yearOfEstablishment;
+    }
+
+    public void setYearOfEstablishment(Integer yearOfEstablishment) {
+        this.yearOfEstablishment = yearOfEstablishment;
+    }
+
+    public String getWebsiteUrl() {
+        return websiteUrl;
+    }
+
+    public void setWebsiteUrl(String websiteUrl) {
+        this.websiteUrl = websiteUrl;
+    }
+
+    public String getLinkedinUrl() {
+        return linkedinUrl;
+    }
+
+    public void setLinkedinUrl(String linkedinUrl) {
+        this.linkedinUrl = linkedinUrl;
+    }
+
+    public List<JobRec> getJobs() {
+        return jobs;
+    }
+
+    public void setJobs(List<JobRec> jobs) {
+        this.jobs = jobs;
+    }
     // Getters and setters
 }
 

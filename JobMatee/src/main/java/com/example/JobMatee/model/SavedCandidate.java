@@ -15,8 +15,6 @@ public class SavedCandidate {
     @ManyToOne
     @JoinColumn(name = "recruiter_id")
     private Recruiter recruiter;
-
-
     public Long getCandidateId() {
         return candidateId;
     }

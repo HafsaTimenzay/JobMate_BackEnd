@@ -34,9 +34,6 @@ public class Candidate extends User {
     @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
     private List<JobApplication> applications;
 
-    @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
-    private List<JobAlert> alerts;
-
     @ManyToMany
     @JoinTable(
             name = "candidate_saved_jobs",
@@ -100,14 +97,6 @@ public class Candidate extends User {
 
     public void setApplications(List<JobApplication> applications) {
         this.applications = applications;
-    }
-
-    public List<JobAlert> getAlerts() {
-        return alerts;
-    }
-
-    public void setAlerts(List<JobAlert> alerts) {
-        this.alerts = alerts;
     }
 
     public List<Job> getSavedJobs() {

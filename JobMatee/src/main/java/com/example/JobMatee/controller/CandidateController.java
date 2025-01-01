@@ -6,7 +6,6 @@ import com.example.JobMatee.model.Job;
 import com.example.JobMatee.model.JobApplication;
 import com.example.JobMatee.service.CandidateService;
 import com.example.JobMatee.service.FileUploadService;
-import com.example.JobMatee.service.JobAlertService;
 import com.example.JobMatee.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +14,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/candidate")
 public class CandidateController {
 
     @Autowired
     private CandidateService candidateService;
-
-    @Autowired
-    private JobAlertService jobAlertService;
 
     @Autowired
     private JobService jobService;
