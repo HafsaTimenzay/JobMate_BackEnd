@@ -19,10 +19,16 @@ public class AuthenticationService {
 
     public boolean authenticateUser(String email, String password) {
         // Find user by email
-        Optional<User> user = userRepository.findByEmail(email);
+        Optional<User> optionalUser = userRepository.findByEmail(email);
 
-        // Check if user exists and password matches
-        return user != null && passwordEncoder.matches(password, String.valueOf(user.get()));
+        // Validate if user exists and password matches
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get(); // Extract the User object
+            return passwordEncoder.matches(password, user.getPassword()); // Compare provided password with stored hashed password
+        }
+
+        return false; // Return false if user not found
     }
 }
+
 

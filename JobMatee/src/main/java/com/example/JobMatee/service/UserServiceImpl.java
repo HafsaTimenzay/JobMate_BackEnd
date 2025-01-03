@@ -35,7 +35,6 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByUsername(userSignupDTO.getUsername())) {
             throw new RuntimeException("Username already in use");
         }
-
         // Create new user
         User user = new User();
         user.setFirstname(userSignupDTO.getFirstName());
