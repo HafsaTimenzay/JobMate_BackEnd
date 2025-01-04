@@ -32,17 +32,13 @@ public class UserServiceImpl implements UserService {
         if (userRepository.existsByEmail(userSignupDTO.getEmail())) {
             throw new RuntimeException("Email already in use");
         }
-        if (userRepository.existsByUsername(userSignupDTO.getUsername())) {
-            throw new RuntimeException("Username already in use");
-        }
         // Create new user
         User user = new User();
         user.setFirstname(userSignupDTO.getFirstName());
         user.setLastname(userSignupDTO.getLastName());
         user.setEmail(userSignupDTO.getEmail());
-        user.setUsername(userSignupDTO.getUsername());
         user.setPassword(passwordEncoder.encode(userSignupDTO.getPassword()));
-        user.setRole(Role.valueOf(userSignupDTO.getRole().toUpperCase()));
+        user.setRole(userSignupDTO.getRole());
         user.setVerified(false); // Default to unverified
 
         // Generate verification token

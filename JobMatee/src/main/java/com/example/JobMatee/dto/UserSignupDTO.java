@@ -1,5 +1,6 @@
 package com.example.JobMatee.dto;
 
+import com.example.JobMatee.model.Role;
 import lombok.Data;
 
 @Data
@@ -15,7 +16,7 @@ public class UserSignupDTO {
 
     private String password;
 
-    private String role;
+    private Role role;
 
     public String getFirstName() {
         return firstName;
@@ -57,11 +58,11 @@ public class UserSignupDTO {
         this.password = password;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(Role role) {
         this.role = role;
     }
 }
