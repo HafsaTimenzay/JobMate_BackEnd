@@ -115,5 +115,9 @@ public class CandidateService {
         candidateSettingsRepository.save(settings); // Save the changes
     }
 
+    public Candidate getCandidateById(Long id) {
+        return candidateRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Candidate not found"));
+    }
 }
 

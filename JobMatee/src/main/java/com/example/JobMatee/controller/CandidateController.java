@@ -1,6 +1,7 @@
 package com.example.JobMatee.controller;
 
 import com.example.JobMatee.dto.ProfileDTO;
+import com.example.JobMatee.model.Candidate;
 import com.example.JobMatee.model.CandidateSettings;
 import com.example.JobMatee.model.Job;
 import com.example.JobMatee.model.JobApplication;
@@ -8,11 +9,14 @@ import com.example.JobMatee.service.CandidateService;
 import com.example.JobMatee.service.FileUploadService;
 import com.example.JobMatee.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
@@ -27,6 +31,23 @@ public class CandidateController {
 
     @Autowired
     private FileUploadService fileUploadService;
+
+    /**
+     * Fetch basic candidate details.
+     */
+    @GetMapping("/{id}/details")
+    public ResponseEntity<Map<String, String>> getCandidateDetails(@PathVariable Long id) {
+        Candidate candidate = candidateService.getCandidateById(id); // Ensure this method exists in CandidateService
+
+        if (candidate != null) {
+            Map<String, String> details = new HashMap<>();
+            details.put("firstName", candidate.getFirstname());
+            details.put("lastName", candidate.getLastname());
+            return ResponseEntity.ok(details);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Candidate not found"));
+        }
+    }
 
     /**
      * Get the most recent applications for a candidate.
