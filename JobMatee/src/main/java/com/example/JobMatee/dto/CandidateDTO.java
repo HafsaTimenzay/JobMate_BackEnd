@@ -1,95 +1,41 @@
-package com.example.JobMatee.model;
-
-import jakarta.persistence.*;
-import lombok.Data;
+package com.example.JobMatee.dto;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
-@Entity
-@Data
-@Table(name = "candidate")
-public class Candidate {
 
-    @Id
-    private Long id;
+
+public class CandidateDTO {
+
+    // Getters and Setters
     // Personal Information
-    @Column(name = "firstname", nullable = false) // , nullable = false
     private String firstname;
-
-    @Column(name = "lastname", nullable = false)
     private String lastname;
-
-    @Column(name = "date_of_birth")
     private LocalDate dateOfBirth;
-
-    @Column(name = "gender")
     private String gender;
-
-    @Column(name = "city")
     private String city;
-
-    @Column(name = "phone_number")
     private String phoneNumber;
 
     // Profile Details
-    @Column(name = "profile_picture")
     private String profilePicture;
-
-    @Column(name = "resume_path")
     private String resumePath;
-
-    @Column(name = "job_title")
     private String jobTitle;
-
-    @Column(name = "education_level")
     private String educationLevel;
-
-    @Column(name = "experience_years")
     private Integer experienceYears;
-
-    @Column(name = "bio")
     private String bio;
-
-    @Column(name = "personal_website")
     private String personalWebsite;
-
-    @Column(name = "linkedin_url")
     private String linkedinUrl;
-
-    @Column(name = "saved")
     private Boolean saved;
 
-    @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
-    private List<JobApplication> applications = new ArrayList<>();
+    private String email;
+    private String password;
 
-
-
-//    @OneToOne // or appropriate relationship
-//    @MapsId // Ensures it uses the same ID as User
-//    private User user;
-
-    public Candidate() {
-//        super(email, password, role);
-//        this.firstname = firstname;
+    public String getEmail() {
+        return email;
     }
 
-//    public String getEmail() {
-//        return email;
-//    }
-
-//    public void setEmail(String firstname) {
-//        this.firstname = firstname;
-//    }
-
-//    public String getPassword() {
-//        return firstname;
-//    }
-
-//    public void setPassword(String firstname) {
-//        this.firstname = firstname;
-//    }
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getFirstname() {
         return firstname;
@@ -183,8 +129,8 @@ public class Candidate {
         return bio;
     }
 
-    public void setBio(String preferredRole) {
-        this.bio = preferredRole;
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     public String getPersonalWebsite() {
@@ -203,19 +149,11 @@ public class Candidate {
         this.linkedinUrl = linkedinUrl;
     }
 
-    public List<JobApplication> getApplications() {
-        return applications;
+    public Boolean getSaved() {
+        return saved;
     }
 
-    public void setApplications(List<JobApplication> applications) {
-        this.applications = applications;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
+    public void setSaved(Boolean saved) {
+        this.saved = saved;
     }
 }

@@ -5,6 +5,7 @@ import java.time.LocalDate;
 
 @Entity
 public class JobApplication {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -20,11 +21,13 @@ public class JobApplication {
     @Column(name = "resume_path")
     private String resumePath;
 
+
     @Column(name = "additional_notes", length = 1000)
     private String additionalNotes;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private String status = "active"; // Default to "active"
+    private ApplicationStatus status = ApplicationStatus.ACTIVE; // Default to "active"
 
     @Column(name = "applied_date", nullable = false)
     private LocalDate appliedDate;
@@ -69,21 +72,18 @@ public class JobApplication {
         this.resumePath = resumePath;
     }
 
-
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public LocalDate getAppliedDate() {
         return appliedDate;
     }
 
     public void setAppliedDate(LocalDate appliedDate) {
         this.appliedDate = appliedDate;
+    }
+    public ApplicationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ApplicationStatus status) {
+        this.status = status;
     }
 }

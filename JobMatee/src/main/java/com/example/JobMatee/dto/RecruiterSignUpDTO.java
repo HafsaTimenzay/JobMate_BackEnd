@@ -1,47 +1,40 @@
-package com.example.JobMatee.model;
+package com.example.JobMatee.dto;
 
-import jakarta.persistence.*;
-import java.util.List;
+import com.example.JobMatee.model.Role;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
-public class Recruiter {
-    @Id
-    private Long id;
+@Setter
+@Getter
+public class RecruiterSignUpDTO {
+    private String email;  // Included for signup
+    private String password;  // Included for signup
 
-    @Column(name = "company_logo")
-    private String companyLogo;  // Path to logo
-
-    @Column(name = "company_name", nullable = false)
     private String companyName;
-
-    @Column(name = "company_description", length = 2000)
     private String companyDescription;
-
-    @Column(name = "organisation_type")
     private String organisationType;
-
-    @Column(name = "industry_type")
     private String industryType;
-
-    @Column(name = "team_size")
     private String teamSize;
-
-    @Column(name = "year_of_establishment")
     private Integer yearOfEstablishment;
-
-    @Column(name = "website_url")
     private String websiteUrl;
-
-    @Column(name = "linkedin_url")
     private String linkedinUrl;
+    private String companyLogo;
+    private Role role;
 
-
-    public String getCompanyLogo() {
-        return companyLogo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCompanyLogo(String companyLogo) {
-        this.companyLogo = companyLogo;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getCompanyName() {
@@ -108,13 +101,16 @@ public class Recruiter {
         this.linkedinUrl = linkedinUrl;
     }
 
-
-    public void setId(Long id) {
-        this.id = id;
+    public String getCompanyLogo() {
+        return companyLogo;
     }
 
-    public Long getId() {
-        return id;
+    public void setCompanyLogo(String companyLogo) {
+        this.companyLogo = companyLogo;
     }
+
+    public void setRole(Role role) { this.role = role;}
+
+    public Role getRole() { return role;}
 }
 

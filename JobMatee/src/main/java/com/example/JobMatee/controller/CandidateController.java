@@ -1,137 +1,57 @@
 package com.example.JobMatee.controller;
 
-import com.example.JobMatee.dto.ProfileDTO;
-import com.example.JobMatee.model.Candidate;
-import com.example.JobMatee.model.CandidateSettings;
-import com.example.JobMatee.model.Job;
-import com.example.JobMatee.model.JobApplication;
+
+import com.example.JobMatee.dto.CandidateDTO;
+import com.example.JobMatee.dto.CandidateSignupDTO;
 import com.example.JobMatee.service.CandidateService;
-import com.example.JobMatee.service.FileUploadService;
-import com.example.JobMatee.service.JobService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/candidate")
 public class CandidateController {
 
-    @Autowired
-    private CandidateService candidateService;
+    private final CandidateService candidateService;
 
-    @Autowired
-    private JobService jobService;
-
-    @Autowired
-    private FileUploadService fileUploadService;
-
-    /**
-     * Fetch basic candidate details.
-     */
-    @GetMapping("/{id}/details")
-    public ResponseEntity<Map<String, String>> getCandidateDetails(@PathVariable Long id) {
-        Candidate candidate = candidateService.getCandidateById(id); // Ensure this method exists in CandidateService
-
-        if (candidate != null) {
-            Map<String, String> details = new HashMap<>();
-            details.put("firstName", candidate.getFirstname());
-            details.put("lastName", candidate.getLastname());
-            return ResponseEntity.ok(details);
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Map.of("error", "Candidate not found"));
-        }
+    public CandidateController(CandidateService candidateService) {
+        this.candidateService = candidateService;
     }
 
-    /**
-     * Get the most recent applications for a candidate.
-     */
-    @GetMapping("/{id}/recent-applications")
-    public ResponseEntity<List<JobApplication>> getRecentApplications(@PathVariable Long id) {
-        List<JobApplication> applications = candidateService.getRecentApplications(id);
-        return ResponseEntity.ok(applications);
-    }
+    // Create a new candidate
+//    @PostMapping("/create")
+//    public ResponseEntity<CandidateDTO> createCandidate(@RequestBody CandidateSignupDTO createDTO) {
+//        CandidateDTO candidateDTO = candidateService.createCandidate(createDTO);
+//        return ResponseEntity.ok(candidateDTO);
+//    }
 
-    /**
-     * Get all job applications for a candidate.
-     */
-    @GetMapping("/{id}/all-applications")
-    public ResponseEntity<List<JobApplication>> getAllApplications(@PathVariable Long id) {
-        List<JobApplication> applications = candidateService.getAllApplications(id);
-        return ResponseEntity.ok(applications);
-    }
-
-    /**
-     * Update profile settings for a candidate.
-     */
-    @PutMapping("/{id}/profile")
-    public ResponseEntity<String> updateProfile(@PathVariable Long id, @RequestBody ProfileDTO profileDTO) {
-        candidateService.saveOrUpdateProfileSettings(profileDTO.toEntity(), id);
-        return ResponseEntity.ok("Profile updated successfully");
-    }
-
-    /**
-     * Fetch profile settings for a candidate.
-     */
-    @GetMapping("/{id}/profile")
-    public ResponseEntity<CandidateSettings> getProfile(@PathVariable Long id) {
-        CandidateSettings profile = candidateService.getProfileSettings(id);
-        return ResponseEntity.ok(profile);
-    }
-
-    @GetMapping("/{id}/saved-jobs")
-    public ResponseEntity<List<Job>> getSavedJobs(@PathVariable Long id) {
-        List<Job> savedJobs = candidateService.getSavedJobs(id);
-        return ResponseEntity.ok(savedJobs);
-    }
-
-    @PostMapping("/{id}/save-job/{jobId}")
-    public ResponseEntity<String> saveJob(@PathVariable Long id, @PathVariable Long jobId) {
-        Job job = jobService.getJobById(jobId); // Assuming JobService exists
-        candidateService.saveJob(id, job);
-        return ResponseEntity.ok("Job saved successfully");
-    }
-
-    @PostMapping("/{candidateId}/apply/{jobId}")
-    public ResponseEntity<String> applyToJob(
-            @PathVariable Long candidateId,
-            @PathVariable Long jobId,
-            @RequestParam("resume") MultipartFile resume,
-            @RequestParam("additionalNotes") String additionalNotes) {
-
-        String resumePath = fileUploadService.uploadFile(resume);
-        candidateService.applyToJob(candidateId, jobId, resumePath, additionalNotes);
-
-        return ResponseEntity.ok("Application submitted successfully");
-    }
-
-
-    @PutMapping("/{id}/update-email")
-    public ResponseEntity<String> updateEmail(@PathVariable Long id, @RequestBody String newEmail) {
-        candidateService.updateEmail(id, newEmail);
-        return ResponseEntity.ok("Email updated successfully");
-    }
-
-    @PutMapping("/{id}/update-password")
-    public ResponseEntity<String> updatePassword(@PathVariable Long id, @RequestBody String newPassword) {
-        candidateService.updatePassword(id, newPassword);
-        return ResponseEntity.ok("Password updated successfully");
-    }
-
-    @PostMapping("/{id}/upload-profile-picture")
-    public ResponseEntity<String> uploadProfilePicture(@PathVariable Long id, @RequestParam("file") MultipartFile file) {
-        String path = fileUploadService.uploadFile(file); // Assuming FileStorageService exists
-        candidateService.updateProfilePicture(id, path);
-        return ResponseEntity.ok("Profile picture uploaded successfully");
-    }
-
-
-
+    // Get all candidates
+//    @GetMapping
+//    public ResponseEntity<List<CandidateDTO>> getAllCandidates() {
+//        List<CandidateDTO> candidates = candidateService.getAllCandidates();
+//        return ResponseEntity.ok(candidates);
+//    }
+//
+//    // Get a candidate by ID
+//    @GetMapping("/{id}")
+//    public ResponseEntity<CandidateDTO> getCandidateById(@PathVariable Long id) {
+//        CandidateDTO candidate = candidateService.getCandidateById(id);
+//        return ResponseEntity.ok(candidate);
+//    }
+//
+//    // Update a candidate by ID
+//    @PutMapping("/{id}")
+//    public ResponseEntity<CandidateDTO> updateCandidate(@PathVariable Long id, @RequestBody CandidateDTO candidateDTO) {
+//        CandidateDTO updatedCandidate = candidateService.updateCandidate(id, candidateDTO);
+//        return ResponseEntity.ok(updatedCandidate);
+//    }
+//
+//    // Delete a candidate by ID
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity<Void> deleteCandidate(@PathVariable Long id) {
+//        candidateService.deleteCandidate(id);
+//        return ResponseEntity.noContent().build();
+//    }
 }
 
