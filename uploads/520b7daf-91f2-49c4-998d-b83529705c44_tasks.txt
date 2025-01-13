@@ -1,0 +1,4 @@
+1-Présentation (DONE)
+2-Barcode scanner
+3-alerte de faible stock
+4-Mieux comprendre le code

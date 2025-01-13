@@ -1,6 +1,9 @@
 package com.example.JobMatee.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import org.antlr.v4.runtime.misc.NotNull;
+
 import java.time.LocalDate;
 
 @Entity
@@ -12,25 +15,27 @@ public class JobApplication {
 
     @ManyToOne
     @JoinColumn(name = "candidate_id", nullable = false)
+    @JsonBackReference
     private Candidate candidate;
 
     @ManyToOne
     @JoinColumn(name = "job_id", nullable = false)
     private Job job;
 
-    @Column(name = "resume_path")
+    @NotNull
     private String resumePath;
-
-
-    @Column(name = "additional_notes", length = 1000)
-    private String additionalNotes;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private ApplicationStatus status = ApplicationStatus.ACTIVE; // Default to "active"
 
     @Column(name = "applied_date", nullable = false)
-    private LocalDate appliedDate;
+    private LocalDate appliedDate= LocalDate.now();
+
+    @Column(nullable = false)
+    private String description;
+
+
 
     public Long getId() {
         return id;
@@ -48,12 +53,12 @@ public class JobApplication {
         this.candidate = candidate;
     }
 
-    public String getAdditionalNotes() {
-        return additionalNotes;
+    public String getDescription() {
+        return description;
     }
 
-    public void setAdditionalNotes(String additionalNotes) {
-        this.additionalNotes = additionalNotes;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Job getJob() {

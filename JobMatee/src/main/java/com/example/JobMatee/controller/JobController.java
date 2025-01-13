@@ -61,14 +61,13 @@ public class JobController {
 //    /**
 //     * Apply to a job by uploading resume and cover letter.
 //     */
-//    @PostMapping("/{jobId}/apply")
-//    public ResponseEntity<String> applyToJob(
-//            @PathVariable Long jobId,
-//            @RequestParam Candidate id,
-//            @RequestParam String resumeUrl,
-//            @RequestParam String coverLetter) {
-//        jobService.applyToJob(jobId, id, resumeUrl, coverLetter);
-//        return ResponseEntity.ok("Application submitted successfully");
-//    }
+    @PostMapping("/{jobId}/apply")
+    public ResponseEntity<String> applyToJob(
+            @PathVariable Long jobId,
+            @RequestParam Candidate id,
+            @RequestParam String resumeUrl) {
+        jobService.applyToJob(jobId, id, resumeUrl);
+        return ResponseEntity.ok("Application submitted successfully");
+    }
 }
 

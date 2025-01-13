@@ -4,29 +4,37 @@ import java.time.LocalDate;
 
 public class JobApplicationDTO {
 
-    private Long id; // For display purposes
-    private Long candidateId; // Reference to the candidate
-    private Long jobId; // Reference to the job
-    private String resumePath; // Optional resume path
-    private String additionalNotes; // Any additional notes provided by the candidate
-    private String status; // Status of the application (e.g., ACTIVE, REJECTED, etc.)
-    private LocalDate appliedDate; // The date when the application was submitted
+    private Long id;
+    private String description;
+    private String resumePath;
+    private String jobTitle; // Title of the job from Job entity
+    private String candidateName; // Full name of the candidate from Candidate entity
+    private String location; // Location of the job
+    private String type; // Job type (e.g., Full Time, Part Time, Remote)
+    private Double maxSalary; // Maximum salary for the job
+    private Double minSalary; // Minimum salary for the job
+    private String appliedDate; // Date the application was submitted
+    private String status; // Application status
 
-    // Constructors
-    public JobApplicationDTO() {
-    }
+    // Default Constructor
+    public JobApplicationDTO() {}
 
-    public JobApplicationDTO(Long id, Long candidateId, Long jobId, String resumePath, String additionalNotes, String status, LocalDate appliedDate) {
+    // Parameterized Constructor
+    public JobApplicationDTO(Long id, String description, String resumePath, String jobTitle, String candidateName,
+                             String location, String type, Double maxSalary, Double minSalary, String appliedDate, String status) {
         this.id = id;
-        this.candidateId = candidateId;
-        this.jobId = jobId;
+        this.description = description;
         this.resumePath = resumePath;
-        this.additionalNotes = additionalNotes;
-        this.status = status;
+        this.jobTitle = jobTitle;
+        this.candidateName = candidateName;
+        this.location = location;
+        this.type = type;
+        this.maxSalary = maxSalary;
+        this.minSalary = minSalary;
         this.appliedDate = appliedDate;
+        this.status = status;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -35,20 +43,12 @@ public class JobApplicationDTO {
         this.id = id;
     }
 
-    public Long getCandidateId() {
-        return candidateId;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCandidateId(Long candidateId) {
-        this.candidateId = candidateId;
-    }
-
-    public Long getJobId() {
-        return jobId;
-    }
-
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getResumePath() {
@@ -59,12 +59,60 @@ public class JobApplicationDTO {
         this.resumePath = resumePath;
     }
 
-    public String getAdditionalNotes() {
-        return additionalNotes;
+    public String getJobTitle() {
+        return jobTitle;
     }
 
-    public void setAdditionalNotes(String additionalNotes) {
-        this.additionalNotes = additionalNotes;
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
+
+    public String getCandidateName() {
+        return candidateName;
+    }
+
+    public void setCandidateName(String candidateName) {
+        this.candidateName = candidateName;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Double getMaxSalary() {
+        return maxSalary;
+    }
+
+    public void setMaxSalary(Double maxSalary) {
+        this.maxSalary = maxSalary;
+    }
+
+    public Double getMinSalary() {
+        return minSalary;
+    }
+
+    public void setMinSalary(Double minSalary) {
+        this.minSalary = minSalary;
+    }
+
+    public String getAppliedDate() {
+        return appliedDate;
+    }
+
+    public void setAppliedDate(String appliedDate) {
+        this.appliedDate = appliedDate;
     }
 
     public String getStatus() {
@@ -74,12 +122,5 @@ public class JobApplicationDTO {
     public void setStatus(String status) {
         this.status = status;
     }
-
-    public LocalDate getAppliedDate() {
-        return appliedDate;
-    }
-
-    public void setAppliedDate(LocalDate appliedDate) {
-        this.appliedDate = appliedDate;
-    }
 }
+

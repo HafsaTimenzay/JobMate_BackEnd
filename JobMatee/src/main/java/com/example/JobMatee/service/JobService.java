@@ -29,8 +29,8 @@ public class JobService {
     public List<Job> getAllJobs() {
         return jobRepository.findAll();
     }
-//    @Autowired
-//    private JobApplicationRepository jobApplicationRepository;
+    @Autowired
+    private JobApplicationRepository jobApplicationRepository;
 //
 //    @Autowired
 //    private JobRepository jobRepository;
@@ -58,18 +58,18 @@ public class JobService {
 //                .orElseThrow(() -> new RuntimeException("Job not found!"));
 //    }
 //
-//    public void applyToJob(Long jobId, Candidate candidateId, String resumeUrl, String coverLetter) {
-//        Job job = jobRepository.findById(jobId)
-//                .orElseThrow(() -> new RuntimeException("Job not found!"));
-//
-//        JobApplication application = new JobApplication();
-//        application.setJob(job);
-//        application.setCandidate(candidateId);
-//        application.setResumePath(resumeUrl);
-//        application.setAppliedDate(LocalDate.now());
-//
-//        jobApplicationRepository.save(application);
-//    }
+    public void applyToJob(Long jobId, Candidate candidateId, String resumeUrl) {
+        Job job = jobRepository.findById(jobId)
+                .orElseThrow(() -> new RuntimeException("Job not found!"));
+
+        JobApplication application = new JobApplication();
+        application.setJob(job);
+        application.setCandidate(candidateId);
+        application.setResumePath(resumeUrl);
+        application.setAppliedDate(LocalDate.now());
+
+        jobApplicationRepository.save(application);
+    }
 
 }
 

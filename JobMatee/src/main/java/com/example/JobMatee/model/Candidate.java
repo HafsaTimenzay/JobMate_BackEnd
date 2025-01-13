@@ -1,5 +1,6 @@
 package com.example.JobMatee.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -62,6 +63,7 @@ public class Candidate {
     private Boolean saved;
 
     @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<JobApplication> applications = new ArrayList<>();
 
 
