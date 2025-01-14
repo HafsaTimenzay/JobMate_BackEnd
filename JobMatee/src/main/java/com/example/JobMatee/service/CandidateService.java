@@ -3,10 +3,8 @@ package com.example.JobMatee.service;
 import com.example.JobMatee.dto.CandidateDTO;
 import com.example.JobMatee.dto.CandidateSignupDTO;
 import com.example.JobMatee.model.*;
+import com.example.JobMatee.repository.*;
 import com.example.JobMatee.repository.CandidateRepository;
-import com.example.JobMatee.repository.CandidateRepository;
-import com.example.JobMatee.repository.JobApplicationRepository;
-import com.example.JobMatee.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,29 +14,79 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CandidateService {
+    private final CandidateRepository candidateRepository;
+    private final UserRepository userRepository;
 
-    @Autowired
-    private CandidateRepository candidateRepository;
-
-    @Autowired
-    private JobApplicationRepository jobApplicationRepository;
-
-    @Autowired
-    private CandidateRepository CandidateRepository;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private JobRepository jobRepository;
-
-
-    public List<JobApplication> getAllApplications(Long candidateId) {
-        return jobApplicationRepository.findByCandidateId(candidateId);
+    public CandidateService(CandidateRepository candidateRepository, UserRepository userRepository) {
+        this.candidateRepository = candidateRepository;
+        this.userRepository = userRepository;
     }
+
+    public Candidate updateCandidate(Long id, Candidate updatedCandidate) {
+        // Find the candidate by ID
+        Optional<Candidate> candidateOptional = candidateRepository.findById(id);
+
+        if (candidateOptional.isPresent()) {
+            Candidate existingCandidate = candidateOptional.get();
+
+            // Update the fields that can be updated
+            existingCandidate.setFirstname(updatedCandidate.getFirstname());
+            existingCandidate.setLastname(updatedCandidate.getLastname());
+            existingCandidate.setDateOfBirth(updatedCandidate.getDateOfBirth());
+            existingCandidate.setGender(updatedCandidate.getGender());
+            existingCandidate.setCity(updatedCandidate.getCity());
+            existingCandidate.setPhoneNumber(updatedCandidate.getPhoneNumber());
+            existingCandidate.setProfilePicture(updatedCandidate.getProfilePicture());
+            existingCandidate.setResumePath(updatedCandidate.getResumePath());
+            existingCandidate.setJobTitle(updatedCandidate.getJobTitle());
+            existingCandidate.setEducationLevel(updatedCandidate.getEducationLevel());
+            existingCandidate.setExperienceYears(updatedCandidate.getExperienceYears());
+            existingCandidate.setBio(updatedCandidate.getBio());
+            existingCandidate.setPersonalWebsite(updatedCandidate.getPersonalWebsite());
+            existingCandidate.setLinkedinUrl(updatedCandidate.getLinkedinUrl());
+//            existingCandidate.setSaved(updatedCandidate.getSaved());
+
+            // Save the updated candidate
+            return candidateRepository.save(existingCandidate);
+        } else {
+            throw new RuntimeException("Candidate not found with id " + id);
+        }
+    }
+
+//    public Candidate getCandidateByUserEmail(String email) {
+//        User user = userRepository.findByEmail(email).orElse(null);
+//        if (user == null) {
+//            return null;  // Handle case if user is not found
+//        }
+//        return candidateRepository.findById(user.getId()).orElse(null);
+//    }
+
+
+
+//    @Autowired
+//    private CandidateRepository candidateRepository;
+//
+//    @Autowired
+//    private JobApplicationRepository jobApplicationRepository;
+//
+//    @Autowired
+//    private CandidateRepository CandidateRepository;
+//
+//    @Autowired
+//    private PasswordEncoder passwordEncoder;
+//
+//    @Autowired
+//    private JobRepository jobRepository;
+//
+//
+//    public List<JobApplication> getAllApplications(Long candidateId) {
+//        return jobApplicationRepository.findByCandidateId(candidateId);
+//    }
+
 
 //    public CandidateDTO createCandidate(CandidateSignupDTO signUpDTO) {
 //        User user = new User(signUpDTO.getEmail(), signUpDTO.getPassword(), Role.CANDIDATE);

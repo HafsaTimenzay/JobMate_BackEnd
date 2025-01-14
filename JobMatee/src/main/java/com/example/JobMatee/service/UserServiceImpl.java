@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(Role.CANDIDATE);
         user = userRepository.save(user);
 
-//         Create candidate profile
+        // Create candidate profile
         Candidate candidate = new Candidate();
         candidate.setFirstname(createDTO.getFirstname());
         candidate.setLastname(createDTO.getLastname());
