@@ -4,6 +4,7 @@ package com.example.JobMatee.controller;
 import com.example.JobMatee.dto.CandidateDTO;
 import com.example.JobMatee.dto.CandidateSignupDTO;
 import com.example.JobMatee.model.Candidate;
+import com.example.JobMatee.model.JobApplication;
 import com.example.JobMatee.model.Role;
 import com.example.JobMatee.model.User;
 import com.example.JobMatee.repository.CandidateRepository;
@@ -57,15 +58,92 @@ public class CandidateController {
         }
     }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Candidate> updateCandidate(@PathVariable Long id, @RequestBody Candidate updatedCandidate) {
+    public ResponseEntity<List<JobApplication>> getApplications(@PathVariable String email) {
+        List<JobApplication> applications = candidateService.getApplicationsByEmail(email);
+        return ResponseEntity.ok(applications);
+    }
+
+//    @PutMapping("/update/{id}")
+//    public ResponseEntity<Candidate> updateCandidate(@PathVariable Long id, @RequestBody Candidate updatedCandidate) {
+//        try {
+//            Candidate updated = candidateService.updateCandidate(id, updatedCandidate);
+//            return ResponseEntity.ok(updated);
+//        } catch (Exception e) {
+//            return ResponseEntity.status(404).body(null);  // Candidate not found
+//        }
+//    }
+
+    // Find and update a candidate by email
+//    @PutMapping("/updateByEmail")
+//    public ResponseEntity<Object> updateCandidateByEmail(@RequestParam("email") String email, @RequestBody Candidate updatedCandidate) {
+//        // Find the user by email to get the user id
+//        User user = userRepository.findByEmail(email)
+//                .orElseThrow(() -> new UsernameNotFoundException("User not found with the provided email"));
+//
+//        if (user != null && user.getRole() == Role.CANDIDATE) {
+//            // Use the user id to find the candidate
+//            Candidate existingCandidate = candidateRepository.findById(user.getId())
+//                    .orElseThrow(() -> new RuntimeException("Candidate not found with the provided user ID"));
+//
+//            // Update candidate fields (you can add more fields as necessary)
+//            existingCandidate.setFirstname(updatedCandidate.getFirstname());
+//            existingCandidate.setLastname(updatedCandidate.getLastname());
+//            existingCandidate.setDateOfBirth(updatedCandidate.getDateOfBirth());
+//            existingCandidate.setGender(updatedCandidate.getGender());
+//            existingCandidate.setCity(updatedCandidate.getCity());
+//            existingCandidate.setPhoneNumber(updatedCandidate.getPhoneNumber());
+//            existingCandidate.setProfilePicture(updatedCandidate.getProfilePicture());
+//            existingCandidate.setResumePath(updatedCandidate.getResumePath());
+//            existingCandidate.setJobTitle(updatedCandidate.getJobTitle());
+//            existingCandidate.setEducationLevel(updatedCandidate.getEducationLevel());
+//            existingCandidate.setExperienceYears(updatedCandidate.getExperienceYears());
+//            existingCandidate.setBio(updatedCandidate.getBio());
+//            existingCandidate.setPersonalWebsite(updatedCandidate.getPersonalWebsite());
+//            existingCandidate.setLinkedinUrl(updatedCandidate.getLinkedinUrl());
+////            existingCandidate.setSaved(updatedCandidate.getSaved());
+//
+//            // Save the updated candidate
+//            candidateRepository.save(existingCandidate);
+//            return ResponseEntity.ok(existingCandidate);
+//        } else {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User is not a candidate or doesn't exist");
+//        }
+//    }
+
+    @PutMapping("/updateByEmail")
+    public ResponseEntity<Candidate> updateCandidateByEmail(@RequestParam("email") String email, @RequestBody Candidate updatedCandidate) {
         try {
-            Candidate updated = candidateService.updateCandidate(id, updatedCandidate);
-            return ResponseEntity.ok(updated);
-        } catch (Exception e) {
-            return ResponseEntity.status(404).body(null);  // Candidate not found
+            Candidate existingCandidate = candidateService.findCandidateByEmail(email);
+
+            // Update fields
+            existingCandidate.setFirstname(updatedCandidate.getFirstname());
+            existingCandidate.setLastname(updatedCandidate.getLastname());
+            existingCandidate.setDateOfBirth(updatedCandidate.getDateOfBirth());
+            existingCandidate.setGender(updatedCandidate.getGender());
+            existingCandidate.setCity(updatedCandidate.getCity());
+            existingCandidate.setPhoneNumber(updatedCandidate.getPhoneNumber());
+            existingCandidate.setProfilePicture(updatedCandidate.getProfilePicture());
+            existingCandidate.setResumePath(updatedCandidate.getResumePath());
+            existingCandidate.setJobTitle(updatedCandidate.getJobTitle());
+            existingCandidate.setEducationLevel(updatedCandidate.getEducationLevel());
+            existingCandidate.setExperienceYears(updatedCandidate.getExperienceYears());
+            existingCandidate.setBio(updatedCandidate.getBio());
+            existingCandidate.setPersonalWebsite(updatedCandidate.getPersonalWebsite());
+            existingCandidate.setLinkedinUrl(updatedCandidate.getLinkedinUrl());
+            // ... (other fields)
+
+            candidateRepository.save(existingCandidate);
+            return ResponseEntity.ok(existingCandidate);
+        } catch (UsernameNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // Return specific error for user not found
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);  // Return specific error for non-candidate user
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);  // Generic error for candidate not found
         }
     }
+
+
 
 
 

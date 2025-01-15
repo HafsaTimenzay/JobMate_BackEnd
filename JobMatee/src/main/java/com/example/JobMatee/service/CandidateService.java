@@ -7,6 +7,7 @@ import com.example.JobMatee.repository.*;
 import com.example.JobMatee.repository.CandidateRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -55,6 +56,30 @@ public class CandidateService {
         } else {
             throw new RuntimeException("Candidate not found with id " + id);
         }
+    }
+
+    @Autowired
+    public CandidateService(UserRepository userRepository, CandidateRepository candidateRepository) {
+        this.userRepository = userRepository;
+        this.candidateRepository = candidateRepository;
+    }
+
+    public Candidate findCandidateByEmail(String email) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+        if (user.getRole() != Role.CANDIDATE) {
+            throw new IllegalArgumentException("User is not a candidate");
+        }
+        return candidateRepository.findById(user.getId())
+                .orElseThrow(() -> new RuntimeException("Candidate not found with user ID: " + user.getId()));
+    }
+
+    public List<JobApplication> getApplicationsByEmail(String email) {
+        // Find the candidate by email
+        Candidate candidate = findCandidateByEmail(email);
+
+        // Get the applications related to the candidate
+        return candidate.getApplications();
     }
 
 //    public Candidate getCandidateByUserEmail(String email) {

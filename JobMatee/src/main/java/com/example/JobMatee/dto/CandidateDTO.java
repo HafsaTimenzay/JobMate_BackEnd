@@ -1,7 +1,10 @@
 package com.example.JobMatee.dto;
 
-import java.time.LocalDate;
+import com.example.JobMatee.model.JobApplication;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class CandidateDTO {
@@ -27,6 +30,16 @@ public class CandidateDTO {
     private Boolean saved;
 
     private String email;
+
+    public List<JobApplication> getApplications() {
+        return applications;
+    }
+
+    public void setApplications(List<JobApplication> applications) {
+        this.applications = applications;
+    }
+
+    private List<JobApplication> applications = new ArrayList<>();
     private String password;
 
     public String getEmail() {
