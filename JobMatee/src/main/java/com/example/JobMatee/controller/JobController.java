@@ -1,12 +1,15 @@
 package com.example.JobMatee.controller;
 
-import com.example.JobMatee.model.Candidate;
-import com.example.JobMatee.model.Job;
+import com.example.JobMatee.dto.JobPostRequest;
+import com.example.JobMatee.model.*;
+import com.example.JobMatee.repository.JobRepository;
+import com.example.JobMatee.repository.RecruiterRepository;
 import com.example.JobMatee.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -14,10 +17,14 @@ import java.util.List;
 @RequestMapping("/api/jobs")
 public class JobController {
     private final JobService jobService;
+    private final RecruiterRepository recruiterRepository;
+    private final JobRepository jobRepository;
 
     @Autowired
-    public JobController(JobService jobService) {
+    public JobController(JobService jobService, RecruiterRepository recruiterRepository, JobRepository jobRepository) {
         this.jobService = jobService;
+        this.recruiterRepository = recruiterRepository;
+        this.jobRepository = jobRepository;
     }
 
     // Créer un job
@@ -32,6 +39,41 @@ public class JobController {
     public ResponseEntity<List<Job>> getAllJobs() {
         List<Job> jobs = jobService.getAllJobs();
         return ResponseEntity.ok(jobs);
+    }
+    @PostMapping("/post")
+    public ResponseEntity<?> postJob(@RequestBody JobPostRequest jobPostRequest) {
+        try {
+            // Find the recruiter by email
+            Recruiter recruiter = recruiterRepository.findByEmail(jobPostRequest.getEmail())
+                    .orElseThrow(() -> new RuntimeException("Recruiter not found"));
+
+            // Create a new Job entity
+            Job job = new Job();
+            job.setRecruiter(recruiter);
+            job.setTitle(jobPostRequest.getTitle());
+            job.setCompany(jobPostRequest.getCompany());
+            job.setLocation(jobPostRequest.getLocation());
+            job.setType(JobType.valueOf(jobPostRequest.getType()));
+            job.setSubType(JobSubType.valueOf(jobPostRequest.getSubType()));
+            job.setMinSalary(jobPostRequest.getMinSalary());
+            job.setMaxSalary(jobPostRequest.getMaxSalary());
+            job.setDescription(jobPostRequest.getDescription());
+            job.setPostedDate(LocalDate.parse(jobPostRequest.getPostedDate()));
+            job.setExpirationDate(LocalDate.parse(jobPostRequest.getExpirationDate()));
+            job.setRequirements(jobPostRequest.getRequirements());
+            job.setBenefits(jobPostRequest.getBenefits());
+            job.setExperience(jobPostRequest.getExperience());
+            job.setEducation(jobPostRequest.getEducation());
+            job.setCompanyWebsite(jobPostRequest.getCompanyWebsite());
+            job.setLinkedInUrl(jobPostRequest.getLinkedInUrl());
+
+            // Save the job
+            jobRepository.save(job);
+
+            return ResponseEntity.ok("Job posted successfully!");
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error posting job: " + e.getMessage());
+        }
     }
 //    @Autowired
 //    private JobService jobService;

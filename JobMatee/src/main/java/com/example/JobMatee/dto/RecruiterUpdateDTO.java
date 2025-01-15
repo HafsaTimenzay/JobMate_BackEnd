@@ -1,44 +1,21 @@
-package com.example.JobMatee.model;
+package com.example.JobMatee.dto;
 
-import jakarta.persistence.*;
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
-public class Recruiter {
-    @Id
-    private Long id;
-    @Column(nullable = false)
-    private String email;
-
-    @Column(nullable = false)
-    private String password;
-
-    @Column(name = "company_logo", nullable = true)
-    private String companyLogo;  // Path to logo
-
-    @Column(name = "company_name",nullable = true)
+@Getter
+@Setter
+public class RecruiterUpdateDTO {
+    private String email; // Used to identify the recruiter to update
     private String companyName;
-
-    @Column(name = "company_description", length = 2000,nullable = true)
     private String companyDescription;
-
-    @Column(name = "organisation_type",nullable = true)
     private String organisationType;
-
-    @Column(name = "industry_type",nullable = true)
     private String industryType;
-
-    @Column(name = "team_size",nullable = true)
     private String teamSize;
-
-    @Column(name = "year_of_establishment",nullable = true)
     private Integer yearOfEstablishment;
-
-    @Column(name = "website_url",nullable = true)
     private String websiteUrl;
-
-    @Column(name = "linkedin_url",nullable = true)
     private String linkedinUrl;
+    private String companyLogo;
 
     public String getEmail() {
         return email;
@@ -46,22 +23,6 @@ public class Recruiter {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getCompanyLogo() {
-        return companyLogo;
-    }
-
-    public void setCompanyLogo(String companyLogo) {
-        this.companyLogo = companyLogo;
     }
 
     public String getCompanyName() {
@@ -128,13 +89,11 @@ public class Recruiter {
         this.linkedinUrl = linkedinUrl;
     }
 
-
-    public void setId(Long id) {
-        this.id = id;
+    public String getCompanyLogo() {
+        return companyLogo;
     }
 
-    public Long getId() {
-        return id;
+    public void setCompanyLogo(String companyLogo) {
+        this.companyLogo = companyLogo;
     }
 }
-

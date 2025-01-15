@@ -1,6 +1,8 @@
 package com.example.JobMatee.controller;
 
+import com.example.JobMatee.dto.RecruiterUpdateDTO;
 import com.example.JobMatee.model.*;
+import com.example.JobMatee.repository.RecruiterRepository;
 import com.example.JobMatee.service.RecruiterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +17,53 @@ import java.util.List;
 @RequestMapping("/api/recruiter")
 public class RecruiterController {
 
+
 //    @Autowired
 //    private RecruiterService recruiterService;
+    @Autowired
+    private RecruiterRepository recruiterRepository;
+
+    @PutMapping("/update")
+    public ResponseEntity<?> updateRecruiter(@RequestBody RecruiterUpdateDTO recruiterUpdateDTO) {
+        // Find the recruiter by email
+        Recruiter recruiter = recruiterRepository.findByEmail(recruiterUpdateDTO.getEmail())
+                .orElseThrow(() -> new RuntimeException("Recruiter not found"));
+
+        // Update fields if they are provided in the DTO
+        if (recruiterUpdateDTO.getCompanyName() != null) {
+            recruiter.setCompanyName(recruiterUpdateDTO.getCompanyName());
+        }
+        if (recruiterUpdateDTO.getCompanyDescription() != null) {
+            recruiter.setCompanyDescription(recruiterUpdateDTO.getCompanyDescription());
+        }
+        if (recruiterUpdateDTO.getOrganisationType() != null) {
+            recruiter.setOrganisationType(recruiterUpdateDTO.getOrganisationType());
+        }
+        if (recruiterUpdateDTO.getIndustryType() != null) {
+            recruiter.setIndustryType(recruiterUpdateDTO.getIndustryType());
+        }
+        if (recruiterUpdateDTO.getTeamSize() != null) {
+            recruiter.setTeamSize(recruiterUpdateDTO.getTeamSize());
+        }
+        if (recruiterUpdateDTO.getYearOfEstablishment() != null) {
+            recruiter.setYearOfEstablishment(recruiterUpdateDTO.getYearOfEstablishment());
+        }
+        if (recruiterUpdateDTO.getWebsiteUrl() != null) {
+            recruiter.setWebsiteUrl(recruiterUpdateDTO.getWebsiteUrl());
+        }
+        if (recruiterUpdateDTO.getLinkedinUrl() != null) {
+            recruiter.setLinkedinUrl(recruiterUpdateDTO.getLinkedinUrl());
+        }
+        if (recruiterUpdateDTO.getCompanyLogo() != null) {
+            recruiter.setCompanyLogo(recruiterUpdateDTO.getCompanyLogo());
+        }
+
+        // Save the updated recruiter
+        recruiterRepository.save(recruiter);
+
+        // Return a success response
+        return ResponseEntity.ok("Recruiter updated successfully.");
+    }
 //
 //    @GetMapping("/{id}")
 //    public ResponseEntity<Recruiter> getRecruiterDetails(@PathVariable Long id) {
