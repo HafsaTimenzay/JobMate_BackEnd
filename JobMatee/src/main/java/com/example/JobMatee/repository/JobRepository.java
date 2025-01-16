@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.example.JobMatee.model.JobSubType;
 import com.example.JobMatee.model.JobType;
+import com.example.JobMatee.model.Recruiter;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface JobRepository extends JpaRepository<Job, Long> {
+    List<Job> findByRecruiter(Recruiter recruiter);
 //    List<Job> findByType(JobType type); // Find jobs by type
 //    List<Job> findByTypeAndSubType(JobType type, JobSubType subType);
 

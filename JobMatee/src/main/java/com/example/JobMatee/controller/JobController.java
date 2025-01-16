@@ -1,5 +1,6 @@
 package com.example.JobMatee.controller;
 
+import com.example.JobMatee.dto.JobDTO;
 import com.example.JobMatee.dto.JobPostRequest;
 import com.example.JobMatee.model.*;
 import com.example.JobMatee.repository.JobRepository;
@@ -25,6 +26,32 @@ public class JobController {
         this.jobService = jobService;
         this.recruiterRepository = recruiterRepository;
         this.jobRepository = jobRepository;
+    }
+
+    @GetMapping("/recruiter")
+    public ResponseEntity<?> getJobsByRecruiter(@RequestParam String email) {
+        try {
+            // Find the recruiter by email
+            Recruiter recruiter = recruiterRepository.findByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("Recruiter not found"));
+
+            // Fetch jobs posted by the recruiter
+            List<Job> jobs = jobRepository.findByRecruiter(recruiter);
+
+            // Convert jobs to DTO for a lightweight response
+            List<JobDTO> jobDTOs = jobs.stream().map(job -> new JobDTO(
+                    job.getId(),
+                    job.getTitle(),
+                    job.getType().toString(),
+                    job.getPostedDate().toString(),
+                    job.getStatus(), // Ensure status is a string
+                    job.getApplications() // Total applications for the job
+            )).toList();
+
+            return ResponseEntity.ok(jobDTOs);
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Error fetching jobs: " + e.getMessage());
+        }
     }
 
     // Créer un job
@@ -60,8 +87,8 @@ public class JobController {
             job.setDescription(jobPostRequest.getDescription());
             job.setPostedDate(LocalDate.parse(jobPostRequest.getPostedDate()));
             job.setExpirationDate(LocalDate.parse(jobPostRequest.getExpirationDate()));
-            job.setRequirements(jobPostRequest.getRequirements());
-            job.setBenefits(jobPostRequest.getBenefits());
+            job.setRequirements(jobPostRequest.getRequirements().toString());
+            job.setBenefits(jobPostRequest.getBenefits().toString());
             job.setExperience(jobPostRequest.getExperience());
             job.setEducation(jobPostRequest.getEducation());
             job.setCompanyWebsite(jobPostRequest.getCompanyWebsite());

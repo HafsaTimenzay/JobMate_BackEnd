@@ -1,5 +1,6 @@
 package com.example.JobMatee.dto;
 
+import com.example.JobMatee.model.ApplicationStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,54 +9,71 @@ import java.time.LocalDate;
 @Setter
 @Getter
 public class JobDTO {
+    private Long id;
+    private String title;
+    private String jobType;
+    private String datePosted;
+    private ApplicationStatus status;
+    private int applicationsTotal;
+
+    public JobDTO(Long id, String title, String jobType, String datePosted, ApplicationStatus status, int applicationsTotal) {
+        this.id = id;
+        this.title = title;
+        this.jobType = jobType;
+        this.datePosted = datePosted;
+        this.status = ApplicationStatus.ACTIVE;
+        this.applicationsTotal = 0;
+    }
 
     // Getters and Setters
-    private Long id;  // Job ID
-    private Long recruiterId;  // Reference to the recruiter posting the job
-    private String title;  // Job title
-    private Double salary;  // Fixed salary (if applicable)
-    private String company;  // Company name
-    private String location;  // Job location
-    private String type;  // Job or internship type (represented as a string to avoid tight coupling with enums)
-    private String category;  // Optional category of the job
-    private Double minSalary;  // Minimum salary range
-    private Double maxSalary;  // Maximum salary range
-    private String description;  // Detailed job description
-    private LocalDate postedDate;  // Date when the job was posted
-    private LocalDate expirationDate;  // Date when the job expires
-    private boolean remote;  // Indicates if the job is remote
-    private String requirements;  // Skills or qualifications needed
-    private String benefits;  // Benefits offered
-    private String companyWebsite;  // Link to company website
-    private String linkedInUrl;  // Link to LinkedIn job posting
 
-    // Constructors
-    public JobDTO() {
+    public Long getId() {
+        return id;
     }
 
-    public JobDTO(Long id, Long recruiterId, String title, Double salary, String company, String location, String type,
-                  String category, Double minSalary, Double maxSalary, String description, LocalDate postedDate,
-                  LocalDate expirationDate, boolean remote, String requirements, String benefits,
-                  String companyWebsite, String linkedInUrl) {
+    public void setId(Long id) {
         this.id = id;
-        this.recruiterId = recruiterId;
-        this.title = title;
-        this.salary = salary;
-        this.company = company;
-        this.location = location;
-        this.type = type;
-        this.category = category;
-        this.minSalary = minSalary;
-        this.maxSalary = maxSalary;
-        this.description = description;
-        this.postedDate = postedDate;
-        this.expirationDate = expirationDate;
-        this.remote = remote;
-        this.requirements = requirements;
-        this.benefits = benefits;
-        this.companyWebsite = companyWebsite;
-        this.linkedInUrl = linkedInUrl;
     }
 
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getJobType() {
+        return jobType;
+    }
+
+    public void setJobType(String jobType) {
+        this.jobType = jobType;
+    }
+
+    public String getDatePosted() {
+        return datePosted;
+    }
+
+    public void setDatePosted(String datePosted) {
+        this.datePosted = datePosted;
+    }
+
+    public ApplicationStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ApplicationStatus status) {
+        this.status = status;
+    }
+
+    public int getApplicationsTotal() {
+        return applicationsTotal;
+    }
+
+    public void setApplicationsTotal(int applicationsTotal) {
+        this.applicationsTotal = applicationsTotal;
+    }
 }
+
 
