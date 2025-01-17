@@ -42,9 +42,13 @@ public ResponseEntity<Map<String, String>> login(@RequestBody LoginDTO loginDTO)
         if (isAuthenticated) {
             User user = authenticationService.getUserByEmail(loginDTO.getEmail());
             String role = String.valueOf(user.getRole()); // Assuming "role" is a field in User
+            String email = user.getEmail(); // Add this line to get the email
+
             Map<String, String> response = new HashMap<>();
             response.put("message", "Login successful!");
             response.put("role", role);
+            response.put("email", email); // Include the email in the response
+
             return ResponseEntity.ok(response);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "Invalid credentials"));
@@ -53,6 +57,5 @@ public ResponseEntity<Map<String, String>> login(@RequestBody LoginDTO loginDTO)
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "An error occurred"));
     }
 }
-
 }
 
