@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -46,19 +47,23 @@ public class JobApplicationController {
 
     @PostMapping(value = "/apply", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> apply(
-            @RequestParam("candidateId") Long candidateId,
+            @RequestParam("email") String email,
             @RequestParam("jobId") Long jobId,
-            @RequestParam("description") String description,
-            @RequestParam("resume") MultipartFile resume
+            @RequestParam("resume") MultipartFile resume,
+            @RequestParam("description") String description
     ) {
         try {
             // Fetch the candidate and job entities
-            Candidate candidate = candidateRepository.findById(candidateId)
-                    .orElseThrow(() -> new RuntimeException("Candidate not found"));
+            Candidate candidate = jobApplicationService.findCandidateByEmail(email);
             Job job = jobRepository.findById(jobId)
                     .orElseThrow(() -> new RuntimeException("Job not found"));
 
-            // Use FileUploadService to save the resume file and get its path
+            // Validate file type
+            if (!resume.getContentType().equals("application/pdf")) {
+                throw new RuntimeException("Only PDF files are allowed for resumes.");
+            }
+
+            // Save the resume file and get its path
             String resumePath = fileUploadService.saveFile(resume);
 
             // Create and save the job application
@@ -66,7 +71,7 @@ public class JobApplicationController {
             application.setCandidate(candidate);
             application.setJob(job);
             application.setDescription(description);
-//            application.setResumePath(resumePath);
+            application.setResumePath(resumePath);
             application.setStatus(ApplicationStatus.ACTIVE);
             application.setAppliedDate(LocalDate.now());
 
@@ -75,12 +80,67 @@ public class JobApplicationController {
             return ResponseEntity.ok("Application submitted successfully!");
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
-    @GetMapping("/candidate/{candidateId}")
-    public ResponseEntity<List<JobApplicationDTO>> getCandidateApplications(@PathVariable Long candidateId) {
-        List<JobApplication> applications = jobApplicationService.getApplicationsByCandidate(candidateId);
+
+    @GetMapping("/candidates")
+    public ResponseEntity<List<Candidate>> getCandidatesByJobId(@RequestParam Long jobId) {
+        try {
+            // Fetch job applications for the given job
+            List<JobApplication> applications = jobApplicationRepository.findAllByJobId(jobId);
+
+            // Extract the candidates
+            List<Candidate> candidates = applications.stream()
+                    .map(JobApplication::getCandidate)
+                    .collect(Collectors.toList());
+
+            return ResponseEntity.ok(candidates);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Collections.emptyList());
+        }
+    }
+
+//    @PostMapping(value = "/apply", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public ResponseEntity<String> apply(
+//            @RequestParam("email") String email,
+//            @RequestParam("jobId") Long jobId,
+//            @RequestBody JobApplicationDTO jobApplicationDTO
+//
+//    ) {
+//        try {
+//            // Fetch the candidate and job entities
+//            Candidate candidate = jobApplicationService.findCandidateByEmail(email);
+//            Job job = jobRepository.findById(jobId)
+//                    .orElseThrow(() -> new RuntimeException("Job not found"));
+//
+//            // Use FileUploadService to save the resume file and get its path
+//
+//            // String resumePath = fileUploadService.saveFile(resume);
+//
+//            // Create and save the job application
+//            JobApplication application = new JobApplication();
+//            application.setCandidate(candidate);
+//            application.setJob(job);
+//            application.setDescription(jobApplicationDTO.getDescription());
+//            application.setResumePath(jobApplicationDTO.getResumePath());
+//            application.setStatus(ApplicationStatus.ACTIVE);
+//            application.setAppliedDate(LocalDate.now());
+//
+//            jobApplicationRepository.save(application);
+//
+//            return ResponseEntity.ok("Application submitted successfully!");
+//        } catch (RuntimeException e) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+//        }
+//    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<JobApplicationDTO>> getCandidateApplications(@RequestParam String email) {
+        Candidate candidate = jobApplicationService.findCandidateByEmail(email);
+        List<JobApplication> applications = jobApplicationService.getApplicationsByCandidate(candidate.getId());
 
         List<JobApplicationDTO> dtos = applications.stream().map(app -> {
             JobApplicationDTO dto = new JobApplicationDTO();

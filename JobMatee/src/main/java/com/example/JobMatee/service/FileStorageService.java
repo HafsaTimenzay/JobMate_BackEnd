@@ -31,6 +31,8 @@ import java.util.UUID;
 @Service
 public class FileStorageService {
 
+
+
     private final Path storagePath;
 
     public FileStorageService(@Value("${file.upload-dir}") String uploadDir) {
@@ -42,27 +44,37 @@ public class FileStorageService {
         }
     }
 
-    public String saveFile(MultipartFile file) {
-        try {
-            String fileName = file.getOriginalFilename();
-            if (fileName == null) {
-                throw new RuntimeException("Invalid file name!");
-            }
-
-            // Generate a unique file name to avoid collisions
-            String uniqueFileName = UUID.randomUUID().toString() + "_" + fileName;
-
-            Path targetLocation = this.storagePath.resolve(uniqueFileName);
-            Files.copy(file.getInputStream(), targetLocation);
-            return uniqueFileName; // Return the unique file name
-        } catch (IOException e) {
-            throw new RuntimeException("Could not store file. Error: " + e.getMessage());
-        }
-    }
+//    public String saveFile(MultipartFile file) {
+//        try {
+//            String fileName = file.getOriginalFilename();
+//            if (fileName == null) {
+//                throw new RuntimeException("Invalid file name!");
+//            }
+//
+//            // Generate a unique file name to avoid collisions
+//            String uniqueFileName = UUID.randomUUID().toString() + "_" + fileName;
+//
+//            Path targetLocation = this.storagePath.resolve(uniqueFileName);
+//            Files.copy(file.getInputStream(), targetLocation);
+//            return uniqueFileName; // Return the unique file name
+//        } catch (IOException e) {
+//            throw new RuntimeException("Could not store file. Error: " + e.getMessage());
+//        }
+//    }
 
     public Path getFilePath(String fileName) {
         return this.storagePath.resolve(fileName).normalize();
 }
+
+    private final String uploadDir = "uploads/resumes/";
+
+    public String saveFile(MultipartFile file) throws IOException {
+        String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
+        Path path = Paths.get(uploadDir + fileName);
+        Files.createDirectories(path.getParent());
+        Files.write(path, file.getBytes());
+        return path.toString();
+    }
 }
 
 

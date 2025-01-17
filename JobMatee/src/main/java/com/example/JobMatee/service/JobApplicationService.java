@@ -1,12 +1,12 @@
 package com.example.JobMatee.service;
 
-import com.example.JobMatee.model.Candidate;
-import com.example.JobMatee.model.Job;
-import com.example.JobMatee.model.JobApplication;
+import com.example.JobMatee.model.*;
 import com.example.JobMatee.repository.CandidateRepository;
 import com.example.JobMatee.repository.JobApplicationRepository;
 import com.example.JobMatee.repository.JobRepository;
+import com.example.JobMatee.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +21,24 @@ public class JobApplicationService {
     private CandidateRepository candidateRepository;
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private JobRepository jobRepository;
+    public Candidate findCandidateByEmail(String email) {
+        // Find the user by email to get the user ID
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        // Check if the user is a recruiter
+        if (user.getRole() != Role.CANDIDATE) {
+            throw new IllegalArgumentException("User is not a candidate");
+        }
+
+        // Find and return the recruiter by user ID
+        return candidateRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("Candidate not found with user ID: " + user.getId()));
+    }
+
+
 
     public JobApplication saveApplication(JobApplication application) {
         // Fetch the Candidate entity

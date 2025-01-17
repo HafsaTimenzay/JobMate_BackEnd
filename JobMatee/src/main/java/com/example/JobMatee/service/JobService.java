@@ -22,9 +22,11 @@ public class JobService {
 
 
 
+
     @Autowired
     public JobService(JobRepository jobRepository, CandidateRepository candidateRepository, RecruiterCandidateRepository recruiterCandidateRepository) {
         this.jobRepository = jobRepository;
+
 
     }
 

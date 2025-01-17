@@ -22,7 +22,7 @@ public class JobApplication {
     @JoinColumn(name = "job_id", nullable = false)
     private Job job;
 
-    @NotNull
+    @Column
     private String resumePath;
 
     @Enumerated(EnumType.STRING)
