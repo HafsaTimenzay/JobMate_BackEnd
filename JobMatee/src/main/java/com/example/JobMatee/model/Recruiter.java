@@ -1,17 +1,14 @@
 package com.example.JobMatee.model;
 
 import jakarta.persistence.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Recruiter {
     @Id
     private Long id;
-    @Column(nullable = false)
-    private String email;
-
-    @Column(nullable = false)
-    private String password;
 
     @Column(name = "company_logo", nullable = true)
     private String companyLogo;  // Path to logo
@@ -40,21 +37,9 @@ public class Recruiter {
     @Column(name = "linkedin_url",nullable = true)
     private String linkedinUrl;
 
-    public String getEmail() {
-        return email;
-    }
+    @OneToMany(mappedBy = "recruiter", cascade = CascadeType.ALL)
+    private List<RecruiterCandidate> recruiterCandidates = new ArrayList<>();
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getCompanyLogo() {
         return companyLogo;
@@ -128,6 +113,13 @@ public class Recruiter {
         this.linkedinUrl = linkedinUrl;
     }
 
+    public List<RecruiterCandidate> getRecruiterCandidates() {
+        return recruiterCandidates;
+    }
+
+    public void setRecruiterCandidates(List<RecruiterCandidate> recruiterCandidates) {
+        this.recruiterCandidates = recruiterCandidates;
+    }
 
     public void setId(Long id) {
         this.id = id;

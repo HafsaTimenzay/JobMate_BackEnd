@@ -7,6 +7,7 @@ import com.example.JobMatee.repository.JobRepository;
 import com.example.JobMatee.repository.RecruiterRepository;
 import com.example.JobMatee.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +16,7 @@ import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:3000")
 @RestController
+
 @RequestMapping("/api/jobs")
 public class JobController {
     private final JobService jobService;
@@ -28,30 +30,26 @@ public class JobController {
         this.jobRepository = jobRepository;
     }
 
-    @GetMapping("/recruiter")
-    public ResponseEntity<?> getJobsByRecruiter(@RequestParam String email) {
+    @GetMapping("/findByEmail")
+    public ResponseEntity<Object> getRecruiterByEmail(@RequestParam("email") String email) {
         try {
-            // Find the recruiter by email
-            Recruiter recruiter = recruiterRepository.findByEmail(email)
-                    .orElseThrow(() -> new RuntimeException("Recruiter not found"));
-
-            // Fetch jobs posted by the recruiter
-            List<Job> jobs = jobRepository.findByRecruiter(recruiter);
-
-            // Convert jobs to DTO for a lightweight response
-            List<JobDTO> jobDTOs = jobs.stream().map(job -> new JobDTO(
-                    job.getId(),
-                    job.getTitle(),
-                    job.getType().toString(),
-                    job.getPostedDate().toString(),
-                    job.getStatus(), // Ensure status is a string
-                    job.getApplications() // Total applications for the job
-            )).toList();
-
-            return ResponseEntity.ok(jobDTOs);
-        } catch (Exception e) {
-            return ResponseEntity.status(500).body("Error fetching jobs: " + e.getMessage());
+            // Use the service method to find the recruiter by email
+            Recruiter recruiter = jobService.findRecruiterByEmail(email);
+            return ResponseEntity.ok(recruiter);  // Return the recruiter details
+        } catch (IllegalArgumentException e) {
+            // Handle case where the user is not a recruiter
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User is not a recruiter");
+        } catch (RuntimeException e) {
+            // Handle case where the recruiter is not found
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getJobsByRecruiter() {
+        List<Job> jobs = jobService.getAllJobs();
+        return ResponseEntity.ok(jobs);
+
     }
 
     // Créer un job
@@ -62,17 +60,18 @@ public class JobController {
     }
 
     // Afficher tous les jobs
-    @GetMapping("/all")
-    public ResponseEntity<List<Job>> getAllJobs() {
-        List<Job> jobs = jobService.getAllJobs();
+    @GetMapping("/allJobs")
+    public ResponseEntity<List<Job>> getAllJobs(@RequestParam("email") String email) {
+
+
+        List<Job> jobs = jobService.getJobsByRecruiterEmail(email);
         return ResponseEntity.ok(jobs);
     }
     @PostMapping("/post")
-    public ResponseEntity<?> postJob(@RequestBody JobPostRequest jobPostRequest) {
+    public ResponseEntity<?> postJob(@RequestParam("email") String email, @RequestBody JobPostRequest jobPostRequest) {
         try {
             // Find the recruiter by email
-            Recruiter recruiter = recruiterRepository.findByEmail(jobPostRequest.getEmail())
-                    .orElseThrow(() -> new RuntimeException("Recruiter not found"));
+            Recruiter recruiter = jobService.findRecruiterByEmail(email);
 
             // Create a new Job entity
             Job job = new Job();
@@ -80,15 +79,16 @@ public class JobController {
             job.setTitle(jobPostRequest.getTitle());
             job.setCompany(jobPostRequest.getCompany());
             job.setLocation(jobPostRequest.getLocation());
-            job.setType(JobType.valueOf(jobPostRequest.getType()));
-            job.setSubType(JobSubType.valueOf(jobPostRequest.getSubType()));
+            job.setType(jobPostRequest.getType());
+            job.setSubType(jobPostRequest.getSubType());
+            job.setCategory(jobPostRequest.getCategory());
             job.setMinSalary(jobPostRequest.getMinSalary());
             job.setMaxSalary(jobPostRequest.getMaxSalary());
             job.setDescription(jobPostRequest.getDescription());
-            job.setPostedDate(LocalDate.parse(jobPostRequest.getPostedDate()));
+            job.setPostedDate(LocalDate.now());
             job.setExpirationDate(LocalDate.parse(jobPostRequest.getExpirationDate()));
-            job.setRequirements(jobPostRequest.getRequirements().toString());
-            job.setBenefits(jobPostRequest.getBenefits().toString());
+            job.setRequirements(jobPostRequest.getRequirements());
+            job.setBenefits(jobPostRequest.getBenefits());
             job.setExperience(jobPostRequest.getExperience());
             job.setEducation(jobPostRequest.getEducation());
             job.setCompanyWebsite(jobPostRequest.getCompanyWebsite());

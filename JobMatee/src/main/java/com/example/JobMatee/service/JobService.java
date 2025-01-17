@@ -1,9 +1,9 @@
 package com.example.JobMatee.service;
 
 import com.example.JobMatee.model.*;
-import com.example.JobMatee.repository.JobApplicationRepository;
-import com.example.JobMatee.repository.JobRepository;
+import com.example.JobMatee.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -12,10 +12,20 @@ import java.util.List;
 @Service
 public class JobService {
     private final JobRepository jobRepository;
+    @Autowired
+    private RecruiterRepository recruiterRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private RecruiterService recruiterService;
+
+
+
 
     @Autowired
-    public JobService(JobRepository jobRepository) {
+    public JobService(JobRepository jobRepository, CandidateRepository candidateRepository, RecruiterCandidateRepository recruiterCandidateRepository) {
         this.jobRepository = jobRepository;
+
     }
 
     // Créer un job
@@ -31,7 +41,28 @@ public class JobService {
     }
     @Autowired
     private JobApplicationRepository jobApplicationRepository;
-//
+
+    public Recruiter findRecruiterByEmail(String email) {
+        // Find the user by email to get the user ID
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        // Check if the user is a recruiter
+        if (user.getRole() != Role.RECRUITER) {
+            throw new IllegalArgumentException("User is not a recruiter");
+        }
+
+        // Find and return the recruiter by user ID
+        return recruiterRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("Recruiter not found with user ID: " + user.getId()));
+    }
+    public List<Job> getJobsByRecruiterEmail(String email) {
+        // Find the recruiter by email
+        Recruiter recruiter = recruiterService.findRecruiterByEmail(email);
+
+        // Get all jobs posted by the recruiter
+        return jobRepository.findByRecruiter(recruiter);  // Assuming you have a custom method in JobRepository
+    }
+
+    //
 //    @Autowired
 //    private JobRepository jobRepository;
 //

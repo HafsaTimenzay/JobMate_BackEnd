@@ -63,6 +63,9 @@ public class CandidateController {
         return ResponseEntity.ok(applications);
     }
 
+
+
+
 //    @PutMapping("/update/{id}")
 //    public ResponseEntity<Candidate> updateCandidate(@PathVariable Long id, @RequestBody Candidate updatedCandidate) {
 //        try {

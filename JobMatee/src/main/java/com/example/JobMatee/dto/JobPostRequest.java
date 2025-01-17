@@ -1,22 +1,24 @@
 package com.example.JobMatee.dto;
 
+import com.example.JobMatee.model.JobSubType;
+import com.example.JobMatee.model.JobType;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
 public class JobPostRequest {
-    private String email; // Recruiter's email
     private String title;
     private String company;
     private String location;
-    private String type;
-    private String subType;
+    private JobType type;
+    private JobSubType subType;
     private double minSalary;
     private double maxSalary;
     private String description;
     private String postedDate;
     private String expirationDate;
+    private String category;
     private String requirements;
     private String benefits;
     private String experience;
@@ -24,13 +26,6 @@ public class JobPostRequest {
     private String companyWebsite;
     private String linkedInUrl;
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getTitle() {
         return title;
@@ -56,19 +51,27 @@ public class JobPostRequest {
         this.location = location;
     }
 
-    public String getType() {
+    public JobType getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setType(JobType type) {
         this.type = type;
     }
 
-    public String getSubType() {
+    public JobSubType getSubType() {
         return subType;
     }
 
-    public void setSubType(String subType) {
+    public void setSubType(JobSubType subType) {
         this.subType = subType;
     }
 

@@ -1,8 +1,11 @@
 package com.example.JobMatee.service;
 
+import com.example.JobMatee.dto.RecruiterSignUpDTO;
 import com.example.JobMatee.model.*;
 import com.example.JobMatee.repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -10,6 +13,72 @@ import java.util.List;
 
 @Service
 public class RecruiterService {
+
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private RecruiterRepository recruiterRepository;
+    @Autowired
+    private final CandidateRepository candidateRepository;
+    @Autowired
+    private final RecruiterCandidateRepository recruiterCandidateRepository;
+
+
+    public Recruiter findRecruiterByEmail(String email) {
+        // Find the user by email to get the user ID
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+        // Check if the user is a recruiter
+        if (user.getRole() != Role.RECRUITER) {
+            throw new IllegalArgumentException("User is not a recruiter");
+        }
+
+        // Find and return the recruiter by user ID
+        return recruiterRepository.findById(user.getId()).orElseThrow(() -> new RuntimeException("Recruiter not found with user ID: " + user.getId()));
+    }
+
+    public RecruiterService(RecruiterRepository recruiterRepository, CandidateRepository candidateRepository, RecruiterCandidateRepository recruiterCandidateRepository) {
+        this.recruiterRepository = recruiterRepository;
+        this.candidateRepository = candidateRepository;
+        this.recruiterCandidateRepository = recruiterCandidateRepository;
+    }
+
+    public void saveCandidateForRecruiter(Long recruiterId, Long candidateId, Boolean saveStatus) {
+        Recruiter recruiter = recruiterRepository.findById(recruiterId)
+                .orElseThrow(() -> new EntityNotFoundException("Recruiter not found"));
+        Candidate candidate = candidateRepository.findById(candidateId)
+                .orElseThrow(() -> new EntityNotFoundException("Candidate not found"));
+
+        RecruiterCandidate rc = recruiterCandidateRepository.findByRecruiterIdAndCandidateId(recruiterId, candidateId)
+                .orElse(new RecruiterCandidate());
+        rc.setRecruiter(recruiter);
+        rc.setCandidate(candidate);
+        rc.setSaved(saveStatus);
+
+        recruiterCandidateRepository.save(rc);
+    }
+
+
+    public Recruiter updateRecruiterByEmail(String email, Recruiter updatedRecruiter) {
+        // Find the recruiter by email
+        Recruiter existingRecruiter = findRecruiterByEmail(email);
+
+        // Update recruiter fields
+        existingRecruiter.setCompanyName(updatedRecruiter.getCompanyName());
+        existingRecruiter.setCompanyLogo(updatedRecruiter.getCompanyLogo());
+        existingRecruiter.setCompanyDescription(updatedRecruiter.getCompanyDescription());
+        existingRecruiter.setOrganisationType(updatedRecruiter.getOrganisationType());
+        existingRecruiter.setIndustryType(updatedRecruiter.getIndustryType());
+        existingRecruiter.setTeamSize(updatedRecruiter.getTeamSize());
+        existingRecruiter.setYearOfEstablishment(updatedRecruiter.getYearOfEstablishment());
+        existingRecruiter.setWebsiteUrl(updatedRecruiter.getWebsiteUrl());
+        existingRecruiter.setLinkedinUrl(updatedRecruiter.getLinkedinUrl());
+
+        // Save and return the updated recruiter
+        return recruiterRepository.save(existingRecruiter);
+    }
+
 
 //    @Autowired
 //    private RecruiterRepository recruiterRepository;

@@ -9,6 +9,8 @@ import lombok.Setter;
 public class RecruiterSignUpDTO {
     private String email;  // Included for signup
     private String password;  // Included for signup
+    private Role role;
+
 
     public String getEmail() {
         return email;
@@ -27,5 +29,12 @@ public class RecruiterSignUpDTO {
     }
 
 
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
 }
 

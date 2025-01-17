@@ -49,7 +49,6 @@ public class CandidateService {
             existingCandidate.setBio(updatedCandidate.getBio());
             existingCandidate.setPersonalWebsite(updatedCandidate.getPersonalWebsite());
             existingCandidate.setLinkedinUrl(updatedCandidate.getLinkedinUrl());
-//            existingCandidate.setSaved(updatedCandidate.getSaved());
 
             // Save the updated candidate
             return candidateRepository.save(existingCandidate);
@@ -81,6 +80,8 @@ public class CandidateService {
         // Get the applications related to the candidate
         return candidate.getApplications();
     }
+
+
 
 //    public Candidate getCandidateByUserEmail(String email) {
 //        User user = userRepository.findByEmail(email).orElse(null);

@@ -70,6 +70,7 @@ public class Job {
     @Column
     private String education;
 
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ApplicationStatus status=ApplicationStatus.ACTIVE;

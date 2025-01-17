@@ -70,28 +70,44 @@ public class UserServiceImpl implements UserService {
         user.setEmail(createDTO.getEmail());
         user.setPassword(passwordEncoder.encode(createDTO.getPassword()));
         user.setRole(Role.RECRUITER);
-        User savedUser = userRepository.save(user);
+        user = userRepository.save(user);
 
         // Create and associate Recruiter
         Recruiter recruiter = new Recruiter();
-        recruiter.setId(savedUser.getId());  // Link Recruiter with User ID
-        recruiter.setEmail(createDTO.getEmail());
-        recruiter.setPassword(passwordEncoder.encode(createDTO.getPassword())); // Encrypt password
-        recruiter.setCompanyName(null); // Set to null or provide a default value
-        recruiter.setCompanyDescription(null); // Set to null or provide a default value
-        recruiter.setOrganisationType(null); // Set to null or provide a default value
-        recruiter.setIndustryType(null); // Set to null or provide a default value
-        recruiter.setTeamSize(null); // Set to null or provide a default value
-        recruiter.setYearOfEstablishment(null); // Set to null or provide a default value
-        recruiter.setWebsiteUrl(null); // Set to null or provide a default value
-        recruiter.setLinkedinUrl(null); // Set to null or provide a default value
-        recruiter.setCompanyLogo(null); // Set to null or provide a default value
+        recruiter.setId(user.getId());  // Link Recruiter with User ID
+//        recruiter.setCompanyName(createDTO.getCompanyName());
+//        recruiter.setCompanyLogo(createDTO.getCompanyLogo());
+//        recruiter.setCompanyDescription(createDTO.getCompanyDescription());
+//        recruiter.setOrganisationType(createDTO.getOrganisationType());
+//        recruiter.setIndustryType(createDTO.getIndustryType());
+//        recruiter.setTeamSize(createDTO.getTeamSize());
+//        recruiter.setYearOfEstablishment(createDTO.getYearOfEstablishment());
+//        recruiter.setWebsiteUrl(createDTO.getWebsiteUrl());
+//        recruiter.setLinkedinUrl(createDTO.getLinkedinUrl());
+
         recruiterRepository.save(recruiter);
+
+        System.out.println("Recruiter Email: " + user.getEmail());
+
 
         // Map fields manually to DTO for response
         RecruiterSignUpDTO recruiterSignUpDTO = new RecruiterSignUpDTO();
-        recruiterSignUpDTO.setEmail(savedUser.getEmail());
+        recruiterSignUpDTO.setEmail(user.getEmail());
+        recruiterSignUpDTO.setPassword(passwordEncoder.encode(user.getPassword()));
+        recruiterSignUpDTO.setRole(Role.RECRUITER);
+//        recruiterSignUpDTO.setCompanyName(recruiter.getCompanyName());
+//        recruiterSignUpDTO.setCompanyLogo(recruiter.getCompanyLogo());
+//        recruiterSignUpDTO.setCompanyDescription(recruiter.getCompanyDescription());
+//        recruiterSignUpDTO.setOrganisationType(recruiter.getOrganisationType());
+//        recruiterSignUpDTO.setIndustryType(recruiter.getIndustryType());
+//        recruiterSignUpDTO.setTeamSize(recruiter.getTeamSize());
+//        recruiterSignUpDTO.setYearOfEstablishment(recruiter.getYearOfEstablishment());
+//        recruiterSignUpDTO.setWebsiteUrl(recruiter.getWebsiteUrl());
+//        recruiterSignUpDTO.setLinkedinUrl(recruiter.getLinkedinUrl());
+//        recruiterSignUpDTO.setRole(savedUser.getRole());
+
         return recruiterSignUpDTO;
+
     }
 
 

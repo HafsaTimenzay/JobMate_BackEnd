@@ -15,6 +15,7 @@ public class Candidate {
 
     @Id
     private Long id;
+
     // Personal Information
     @Column(name = "firstname", nullable = false) // , nullable = false
     private String firstname;
@@ -59,8 +60,8 @@ public class Candidate {
     @Column(name = "linkedin_url")
     private String linkedinUrl;
 
-    @Column(name = "saved")
-    private Boolean saved;
+    @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
+    private List<RecruiterCandidate> recruiterCandidates = new ArrayList<>();
 
     @OneToMany(mappedBy = "candidate", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -219,5 +220,12 @@ public class Candidate {
 
     public Long getId() {
         return id;
+    }
+    public List<RecruiterCandidate> getRecruiterCandidates() {
+        return recruiterCandidates;
+    }
+
+    public void setRecruiterCandidates(List<RecruiterCandidate> recruiterCandidates) {
+        this.recruiterCandidates = recruiterCandidates;
     }
 }
